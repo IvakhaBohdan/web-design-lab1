@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Профіль - МійБлог</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="flex flex-col min-h-screen bg-gray-100 font-sans text-gray-800">
+
+    <nav class="bg-indigo-600 text-white shadow-md">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <a href="index.html" class="text-xl font-bold tracking-wider">МійБлог</a>
+            <ul class="flex space-x-6">
+                <li><a href="index.html" class="hover:text-indigo-200 transition">Про додаток</a></li>
+                <li><a href="app.html" class="hover:text-indigo-200 transition">Блог</a></li>
+                <li><a href="profile.html" class="font-semibold border-b-2 border-white pb-1">Профіль</a></li>
+                <li><a href="login.html" class="hover:text-indigo-200 transition">Вихід</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="container mx-auto px-4 py-8 flex-grow max-w-3xl">
+        
+        <div class="flex items-center space-x-4 mb-6">
+            <div class="w-16 h-16 bg-indigo-500 text-white rounded-full flex items-center justify-center text-2xl font-bold shadow-md">
+                ТШ
+            </div>
+            <div>
+                <h1 class="text-3xl font-bold text-gray-900">Профіль користувача</h1>
+                <p class="text-gray-500">Ваші особисті дані</p>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+            <table class="w-full text-left border-collapse">
+                <tbody class="divide-y divide-gray-200">
+                    <tr class="hover:bg-gray-50 transition">
+                        <th class="py-4 px-6 font-semibold text-gray-900 bg-gray-50 w-1/3 border-r border-gray-200">Ім'я</th>
+                        <td class="py-4 px-6 text-gray-700">Тарас Шевченко</td>
+                    </tr>
+                    <tr class="hover:bg-gray-50 transition">
+                        <th class="py-4 px-6 font-semibold text-gray-900 bg-gray-50 border-r border-gray-200">Email</th>
+                        <td class="py-4 px-6 text-gray-700">taras.shevchenko@example.com</td>
+                    </tr>
+                    <tr class="hover:bg-gray-50 transition">
+                        <th class="py-4 px-6 font-semibold text-gray-900 bg-gray-50 border-r border-gray-200">Стать</th>
+                        <td class="py-4 px-6 text-gray-700">Чоловіча</td>
+                    </tr>
+                    <tr class="hover:bg-gray-50 transition">
+                        <th class="py-4 px-6 font-semibold text-gray-900 bg-gray-50 border-r border-gray-200">Дата народження</th>
+                        <td class="py-4 px-6 text-gray-700">09.03.1814</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="mt-6 flex justify-end">
+            <button class="bg-indigo-100 text-indigo-700 hover:bg-indigo-200 font-semibold py-2 px-6 rounded shadow-sm transition">
+                Редагувати профіль
+            </button>
+        </div>
+
+    </main>
+
+    <footer class="bg-gray-800 text-gray-300 py-6 mt-auto">
+        <div class="container mx-auto px-4 text-center">
+            <p>&copy; 2026 Лабораторна робота №1.</p>
+        </div>
+    </footer>
+
+</body>
+</html>

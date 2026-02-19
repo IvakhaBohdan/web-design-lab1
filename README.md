@@ -13,7 +13,7 @@
 
 ## Посилання
 - **GitHub Pages (розгорнутий сайт):** [https://ivakhabohdan.github.io/web-design-lab1/](https://ivakhabohdan.github.io/web-design-lab1/)
-- **URL на документ звіту на Google Drive:** []
+- **URL на документ звіту на Google Drive:** [https://drive.google.com/drive/folders/1Iy395ZgZAKappJe5Hfcwzf9OYo9nF-3f?hl=ru]
 
 ## Склад проєкту
 - `index.html` — сторінка "Про додаток" (з емблемою, описом та інформацією про розробника)

@@ -30,16 +30,18 @@
             </button>
         </div>
 
-        <div class="bg-white p-6 rounded-lg shadow-sm mb-8 border border-gray-200">
-            <h2 class="text-xl font-semibold mb-4 text-indigo-700">Про що ви думаєте сьогодні?</h2>
-            <form>
-                <input type="text" placeholder="Заголовок розповіді..." class="w-full mb-3 px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                <textarea rows="3" placeholder="Напишіть щось цікаве..." class="w-full mb-3 px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
-                <button type="button" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-6 rounded transition">
-                    Додати на стіну
-                </button>
-            </form>
-        </div>
+    <div class="bg-white p-6 rounded-lg shadow-sm mb-8 border border-gray-200">
+    <h2 class="text-xl font-semibold mb-4 text-indigo-700">Про що ви думаєте сьогодні?</h2>
+    <form id="post-form">
+        <input type="text" id="post-title" required placeholder="Заголовок розповіді..." class="w-full mb-3 px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-indigo-500">
+        <textarea id="post-body" rows="3" required placeholder="Напишіть щось цікаве..." class="w-full mb-3 px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
+        <button type="submit" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-6 rounded transition">
+            Додати на стіну
+        </button>
+    </form>
+</div>
+
+<div id="posts-container"></div>
 
         <article class="bg-white p-6 rounded-lg shadow-sm border border-gray-200 mb-6">
             <div class="flex justify-between items-start mb-4">

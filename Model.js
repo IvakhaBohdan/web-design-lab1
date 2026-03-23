@@ -76,16 +76,13 @@ class AppModel {
 }
 
 deletePost(postId) {
-    console.log('DELETE CLICKED ID:', postId);
-
     const post = this.posts.find(p => p.id === postId);
-    console.log('FOUND POST:', post);
 
-    if (!post) return;
+    if (!post || !this.currentUser) return;
+
+    if (post.author !== this.currentUser.name) return;
 
     this.posts = this.posts.filter(p => p.id !== postId);
-
-    console.log('POSTS AFTER DELETE:', this.posts);
 
     this._save('posts', this.posts);
 }

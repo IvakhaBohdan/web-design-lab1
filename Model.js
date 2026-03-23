@@ -41,6 +41,13 @@ class AppModel {
         this._save('currentUser', this.currentUser);
     }
 
+    saveData() {
+        localStorage.setItem('users', JSON.stringify(this.users));
+        localStorage.setItem('posts', JSON.stringify(this.posts));
+
+        this.onDataChanged(); 
+    }
+
     addPost(title, body) {
             const post = {
                 id: Date.now(),

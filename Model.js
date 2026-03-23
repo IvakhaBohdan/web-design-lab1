@@ -74,6 +74,20 @@ class AppModel {
     });
      this._save('posts', this.posts);
 }
+
+deletePost(postId) {
+    const post = this.posts.find(p => p.id === postId);
+    if (!post || !this.currentUser) return;
+
+    // 🔒 тільки автор може видалити
+    if (post.author !== this.currentUser.name) return;
+
+    this.posts = this.posts.filter(p => p.id !== postId);
+
+    this._save('posts', this.posts);
+}
+
+    
     deleteComment(postId, index) {
     const post = this.posts.find(p => p.id === postId);
     if (!post) return;

@@ -4,8 +4,8 @@ class AppView {
         this.postsContainer = document.getElementById('posts-container');
         this.loginForm = document.getElementById('login-form');
         this.registerForm = document.getElementById('register-form');
-        
-        // Елементи профілю
+
+        // Профіль
         this.profileName = document.getElementById('profile-name');
         this.editBtn = document.getElementById('edit-profile-btn');
         this.modal = document.getElementById('edit-modal');
@@ -13,84 +13,115 @@ class AppView {
         this.closeModal = document.getElementById('close-modal');
     }
 
-    displayUserProfile(user, postsCount) {
-        if (!this.profileName) return;
-        
-        this.profileName.textContent = user.name;
-        const fields = {
-            'profile-table-name': user.name,
-            'profile-table-email': user.email,
-            'profile-table-gender': user.gender === 'male' ? 'Чоловіча' : 'Жіноча',
-            'profile-table-dob': user.dob,
-            'profile-posts-count': postsCount
-        };
-
-        for (const [id, value] of Object.entries(fields)) {
-            const el = document.getElementById(id);
-            if (el) el.textContent = value;
-        }
-
-        const avatar = document.querySelector('img[alt="Фото профілю"]');
-        if (avatar) avatar.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}&background=4f46e5&color=fff&size=128`;
-    }
-
+    // ================= POSTS =================
     displayPosts(posts, currentUserEmail) {
         if (!this.postsContainer) return;
-        this.postsContainer.innerHTML = posts.map(post => `
-            <div class="bg-white p-6 rounded-lg shadow mb-4" data-id="${post.id}">
-                <h3 class="text-xl font-bold">${post.title}</h3>
-                <p class="text-gray-600 mb-4">${post.body}</p>
-                <div class="flex justify-between items-center text-sm text-gray-500">
-                    <span>Автор: ${post.author}</span>
-                    <button class="like-btn ${post.likes.includes(currentUserEmail) ? 'text-red-500' : ''}">
-                        ❤ ${post.likes.length}
-                    </button>
-                </div>
-            </div>
-        `).join('');
+
+        this.postsContainer.innerHTML = posts.map(post => {
+            const isLiked = post.likes && post.likes.includes(currentUserEmail);
+
+            return `
+            <article class="bg-white p-6 rounded-lg shadow-sm border mb-6">
+                <h2 class="text-xl font-bold">${post.title}</h2>
+                <p class="text-gray-700">${post.body}</p>
+
+                <button class="like-btn" data-id="${post.id}">
+                    ${isLiked ? '❤️' : '🤍'} (${post.likes.length})
+                </button>
+
+                <button class="delete-btn text-red-500" data-id="${post.id}">
+                    Видалити
+                </button>
+            </article>`;
+        }).join('');
     }
 
+    // ================= PROFILE =================
+    displayUserProfile(user, count) {
+        if (!this.profileName || !user) return;
+
+        this.profileName.textContent = user.name;
+
+        document.getElementById('profile-table-name').textContent = user.name;
+        document.getElementById('profile-table-email').textContent = user.email;
+
+        document.getElementById('profile-posts-count').textContent = count;
+
+        const genders = { male: 'Чоловіча', female: 'Жіноча', other: 'Інше' };
+
+        document.getElementById('profile-table-gender').textContent =
+            genders[user.gender] || 'Не вказано';
+
+        document.getElementById('profile-table-dob').textContent =
+            user.dob ? new Date(user.dob).toLocaleDateString('uk-UA') : 'Не вказано';
+    }
+
+    // ================= EVENTS =================
     bindEvents(handlers) {
-        if (this.registerForm) {
-            this.registerForm.onsubmit = e => {
+
+        // 🔐 LOGIN
+        if (this.loginForm) {
+            this.loginForm.onsubmit = (e) => {
                 e.preventDefault();
-                handlers.register({
+
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+
+                handlers.login(email, password);
+            };
+        }
+
+        // 📝 REGISTER
+        if (this.registerForm) {
+            this.registerForm.onsubmit = (e) => {
+                e.preventDefault();
+
+                const userData = {
                     name: document.getElementById('name').value,
                     email: document.getElementById('email').value,
                     password: document.getElementById('password').value,
                     gender: document.getElementById('gender').value,
                     dob: document.getElementById('dob').value
-                });
+                };
+
+                handlers.register(userData);
             };
         }
 
-        if (this.loginForm) {
-            this.loginForm.onsubmit = e => {
-                e.preventDefault();
-                handlers.login(document.getElementById('email').value, document.getElementById('password').value);
-            };
-        }
-
-        if (this.postForm) {
-            this.postForm.onsubmit = e => {
-                e.preventDefault();
-                handlers.addPost(document.getElementById('post-title').value, document.getElementById('post-body').value);
-                e.target.reset();
-            };
-        }
-
+        // ✏️ EDIT PROFILE
         if (this.editBtn) {
             this.editBtn.onclick = () => this.modal.classList.remove('hidden');
             this.closeModal.onclick = () => this.modal.classList.add('hidden');
-            this.editForm.onsubmit = e => {
+
+            this.editForm.onsubmit = (e) => {
                 e.preventDefault();
+
                 handlers.updateProfile({
                     name: document.getElementById('edit-name').value,
                     gender: document.getElementById('edit-gender').value,
                     dob: document.getElementById('edit-dob').value
                 });
+
                 this.modal.classList.add('hidden');
             };
         }
+
+        this.commonEvents(handlers);
+    }
+
+    commonEvents(handlers) {
+        if (!this.postsContainer) return;
+
+        this.postsContainer.onclick = (e) => {
+            const id = parseInt(e.target.dataset.id);
+
+            if (e.target.classList.contains('delete-btn')) {
+                handlers.deletePost(id);
+            }
+
+            if (e.target.classList.contains('like-btn')) {
+                handlers.likePost(id);
+            }
+        };
     }
 }

@@ -21,99 +21,29 @@
         </div>
     </nav>
 
-    <main class="container mx-auto px-4 py-8 flex-grow max-w-4xl">
-        
-        <div class="flex justify-between items-center mb-6">
-            <h1 class="text-3xl font-bold text-gray-900">Нотатки та пригоди</h1>
-            <button class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded shadow transition">
-                + Новий запис
-            </button>
-        </div>
+ <main class="container mx-auto px-4 py-8 flex-grow max-w-4xl">
+    
+    <div class="flex justify-between items-center mb-6">
+        <h1 class="text-3xl font-bold text-gray-900">Нотатки та пригоди</h1>
+        <button id="show-form-btn" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded shadow transition">
+            + Новий запис
+        </button>
+    </div>
 
     <div class="bg-white p-6 rounded-lg shadow-sm mb-8 border border-gray-200">
-    <h2 class="text-xl font-semibold mb-4 text-indigo-700">Про що ви думаєте сьогодні?</h2>
-    <form id="post-form">
-        <input type="text" id="post-title" required placeholder="Заголовок розповіді..." class="w-full mb-3 px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-indigo-500">
-        <textarea id="post-body" rows="3" required placeholder="Напишіть щось цікаве..." class="w-full mb-3 px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
-        <button type="submit" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-6 rounded transition">
-            Додати на стіну
-        </button>
-    </form>
-</div>
+        <h2 class="text-xl font-semibold mb-4 text-indigo-700">Про що ви думаєте сьогодні?</h2>
+        <form id="post-form">
+            <input type="text" id="post-title" required placeholder="Заголовок розповіді..." class="w-full mb-3 px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            <textarea id="post-body" rows="3" required placeholder="Напишіть щось цікаве..." class="w-full mb-3 px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
+            <button type="submit" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-6 rounded transition">
+                Додати на стіну
+            </button>
+        </form>
+    </div>
 
-<div id="posts-container"></div>
+    <div id="posts-container" class="space-y-6"></div>
 
-        <article class="bg-white p-6 rounded-lg shadow-sm border border-gray-200 mb-6">
-            <div class="flex justify-between items-start mb-4">
-                <h2 class="text-2xl font-bold text-gray-900">Мій перший похід у гори: Карпати 2024</h2>
-                <div class="space-x-2">
-                    <button class="text-sm text-blue-500 hover:underline">Ред.</button>
-                    <button class="text-sm text-red-500 hover:underline">Видалити</button>
-                </div>
-            </div>
-            <p class="text-gray-700 mb-4 leading-relaxed">
-                Цього літа я нарешті наважився на справжній похід. Підйом на Говерлу виявився складнішим, ніж я думав, але краєвиди, що відкриваються з вершини, варті кожної хвилини зусиль. Свіже повітря, гірські річки та вечірні посиденьки біля вогнища — це те, чого так не вистачає в місті.
-            </p>
-            
-            <hr class="my-4 border-gray-100">
-
-            <div class="mt-4">
-                <h3 class="text-lg font-semibold mb-3">Відгуки друзів (2)</h3>
-                
-                <div class="space-y-4 mb-4">
-                    <div class="bg-gray-50 p-3 rounded flex items-start space-x-3">
-                        <img src="https://ui-avatars.com/api/?name=Андрій+Кравченко&background=3498db&color=fff&size=32" alt="АК" class="w-8 h-8 rounded-full shadow-sm">
-                        <div>
-                            <p class="text-sm font-bold text-gray-800">Андрій Кравченко <span class="text-xs text-gray-500 font-normal ml-2">Сьогодні о 12:45</span></p>
-                            <p class="text-gray-600 text-sm mt-1">Класні фото! Теж планую поїхати наступного місяця. Який маршрут обрав?</p>
-                        </div>
-                    </div>
-                    <div class="bg-gray-50 p-3 rounded flex items-start space-x-3">
-                        <img src="https://ui-avatars.com/api/?name=Марина+Сокол&background=f1c40f&color=fff&size=32" alt="МС" class="w-8 h-8 rounded-full shadow-sm">
-                        <div>
-                            <p class="text-sm font-bold text-gray-800">Марина Сокол <span class="text-xs text-gray-500 font-normal ml-2">Вчора о 20:15</span></p>
-                            <p class="text-gray-600 text-sm mt-1">Гори — це любов! Дуже надихаючий допис, чекаю на продовження розповіді.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <form class="flex gap-2">
-                    <input type="text" placeholder="Залишити коментар..." class="flex-grow px-3 py-2 border rounded text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-gray-50">
-                    <button type="button" class="bg-indigo-600 text-white px-4 py-2 rounded text-sm font-bold hover:bg-indigo-700 transition">
-                        Ок
-                    </button>
-                </form>
-            </div>
-        </article>
-
-        <article class="bg-white p-6 rounded-lg shadow-sm border border-gray-200 mb-6">
-            <div class="flex justify-between items-start mb-4">
-                <h2 class="text-2xl font-bold text-gray-900">Як зварити ідеальну каву вдома: мої поради</h2>
-                <div class="space-x-2">
-                    <button class="text-sm text-blue-500 hover:underline">Ред.</button>
-                    <button class="text-sm text-red-500 hover:underline">Видалити</button>
-                </div>
-            </div>
-            <p class="text-gray-700 mb-4 leading-relaxed">
-                Багато хто думає, що для смачної кави потрібна дорога машина. Але насправді секрет у свіжообсмажених зернах та правильній температурі води. Нещодавно спробував новий сорт з Ефіопії — кислинка просто неймовірна! Раджу всім спробувати метод "пуровер".
-            </p>
-            
-            <hr class="my-4 border-gray-100">
-
-            <div class="mt-4">
-                <h3 class="text-lg font-semibold mb-3">Відгуки (0)</h3>
-                <p class="text-gray-500 text-sm mb-4">Поки що ніхто не прокоментував. Будьте першим!</p>
-
-                <form class="flex gap-2">
-                    <input type="text" placeholder="Залишити коментар..." class="flex-grow px-3 py-2 border rounded text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-gray-50">
-                    <button type="button" class="bg-indigo-600 text-white px-4 py-2 rounded text-sm font-bold hover:bg-indigo-700 transition">
-                        Ок
-                    </button>
-                </form>
-            </div>
-        </article>
-
-    </main>
+ </main>
 
     <footer class="bg-gray-800 text-gray-300 py-6 mt-auto">
         <div class="container mx-auto px-4 text-center">

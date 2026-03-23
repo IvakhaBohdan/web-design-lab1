@@ -79,10 +79,49 @@ class AppView {
         document.getElementById('profile-table-dob').textContent = new Date(user.dob).toLocaleDateString('uk-UA');
     }
 
-    bindEvents(handlers) {
-        // ... старі обробники (register, login, postForm) залишаються ...
+   bindEvents(handlers) {
+        // 1. Обробка форми реєстрації
+        if (this.registerForm) {
+            this.registerForm.addEventListener('submit', e => {
+                e.preventDefault(); // Зупиняємо перезавантаження сторінки
+                handlers.register({
+                    name: document.getElementById('name').value,
+                    email: document.getElementById('email').value,
+                    password: document.getElementById('password').value,
+                    gender: document.getElementById('gender').value,
+                    dob: document.getElementById('dob').value
+                });
+            });
+        }
+
+        // 2. Обробка форми входу
+        if (this.loginForm) {
+            this.loginForm.addEventListener('submit', e => {
+                e.preventDefault();
+                handlers.login(
+                    document.getElementById('email').value,
+                    document.getElementById('password').value
+                );
+            });
+        }
+
+        // 3. Обробка форми створення поста
+        if (this.postForm) {
+            this.postForm.addEventListener('submit', e => {
+                e.preventDefault();
+                handlers.addPost(
+                    document.getElementById('post-title').value,
+                    document.getElementById('post-body').value
+                );
+                // Очищаємо і ховаємо форму після публікації
+                this.postForm.reset();
+                document.getElementById('post-form-container').classList.add('hidden');
+            });
+        }
+
         this.commonEvents(handlers);
         
+        // 4. Обробка модального вікна профілю
         if (this.editBtn) {
             this.editBtn.onclick = () => this.modal.classList.remove('hidden');
             this.closeModal.onclick = () => this.modal.classList.add('hidden');

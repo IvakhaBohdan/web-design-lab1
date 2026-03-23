@@ -56,7 +56,7 @@ class AppController {
                 post.comments.splice(index, 1);
                 this.saveData();
                     }
-                }
+                },
 
             updateProfile: (data) => {
                 this.model.updateUser(data);

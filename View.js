@@ -62,17 +62,21 @@ class AppView {
                 }
             });
 
-            this.postsContainer.addEventListener('submit', e => {
-                if (e.target.classList.contains('comment-form')) {
-                    e.preventDefault();
+            if (this.postsContainer) {
 
-                    const id = Number(e.target.dataset.id);
-                    const text = e.target.querySelector('input').value;
+            this.postsContainer.addEventListener('submit', (e) => {
+              if (e.target.classList.contains('comment-form')) {
+               e.preventDefault();
 
-                    handlers.addComment(id, text);
-                    e.target.reset();
-                }
-            });
+              const postId = Number(e.target.dataset.id);
+              const input = e.target.querySelector('input');
+
+              handlers.addComment(postId, input.value);
+
+              input.value = '';
+               }
+              });
+          }
         }
     }
 

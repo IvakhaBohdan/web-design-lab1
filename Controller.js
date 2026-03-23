@@ -43,6 +43,21 @@ class AppController {
                 this.updateView();
             },
 
+            deleteComment(postId, index) {
+                const post = this.posts.find(p => p.id === postId);
+                if (!post) return;
+
+                const comment = post.comments[index];
+
+                if (
+                    comment.author === this.currentUser.name ||
+                    post.author === this.currentUser.name
+                ) {
+                post.comments.splice(index, 1);
+                this.saveData();
+                    }
+                }
+
             updateProfile: (data) => {
                 this.model.updateUser(data);
                 this.updateView();

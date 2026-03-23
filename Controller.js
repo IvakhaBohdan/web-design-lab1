@@ -4,26 +4,67 @@ class AppController {
         this.view = view;
 
         this.model.bindDataChanged(() => this.updateView());
-        this.view.bindEvents({
-            register: (data) => this.model.registerUser(data).success ? window.location.href='login.html' : alert('Email зайнятий'),
-            login: (e, p) => this.model.loginUser(e, p) ? window.location.href='app.html' : alert('Помилка входу'),
-            addPost: (t, b) => this.model.addPost(t, b),
-            likePost: (id) => this.model.toggleLike(id),
-            updateProfile: (data) => this.model.updateUser(data)
-        });
-
         this.updateView();
+
+        this.view.bindEvents({
+            register: (userData) => {
+                const res = this.model.registerUser(userData);
+
+                if (res.success) {
+                    this.model.loginUser(userData.email, userData.password);
+                    window.location.href = 'profile.html';
+                } else {
+                    alert('Користувач вже існує');
+                }
+            },
+
+            login: (email, password) => {
+                if (this.model.loginUser(email, password)) {
+                    window.location.href = 'app.html';
+                } else {
+                    alert('Невірний email або пароль');
+                }
+            },
+
+            addPost: (title, body) => {
+                this.model.addPost(title, body);
+            },
+
+            deletePost: (id) => {
+                this.model.deletePost(id);
+            },
+
+            likePost: (id) => {
+                this.model.toggleLike(id);
+            },
+
+            addComment: (postId, text) => {
+                this.model.addComment(postId, text);
+            },
+
+            updateProfile: (data) => {
+                this.model.updateUser(data);
+                this.updateView();
+            }
+        });
     }
 
     updateView() {
         const user = this.model.currentUser;
-        const userEmail = user ? user.email : null;
-        
-        this.view.displayPosts(this.model.posts, userEmail);
-        
-        if (user) {
-            const myPostsCount = this.model.posts.filter(p => p.authorEmail === user.email).length;
-            this.view.displayUserProfile(user, myPostsCount);
+
+        if (this.view.postsContainer) {
+            this.view.displayPosts(
+                this.model.posts,
+                user ? user.email : null
+            );
+        }
+
+        if (user && this.view.profileName) {
+            const count = this.model.posts.filter(
+                p => p.author === user.name
+            ).length;
+
+            this.view.displayUserProfile(user, count);
         }
     }
 }

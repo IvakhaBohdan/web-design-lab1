@@ -79,11 +79,9 @@ deletePost(postId) {
     const post = this.posts.find(p => p.id === postId);
     if (!post || !this.currentUser) return;
 
-    if (
-        post.author !== this.currentUser.name &&
-        post.author !== this.currentUser.email
-    ) return;
+    if (post.author.trim() !== this.currentUser.name.trim()) return;
 
+    this.posts = this.posts.filter(p => p.id !== postId);
     this._save('posts', this.posts);
 }
 

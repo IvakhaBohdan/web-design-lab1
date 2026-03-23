@@ -35,9 +35,11 @@ class AppController {
 
             // 📝 ДОДАТИ ПОСТ
             addPost: (title, body) => {
-                this.model.addPost(title, body);
+            this.model.addPost(title, body);
+                setTimeout(() => {
                 this.view.hidePostForm();
-            },
+                }, 0);
+                },
 
             // ❌ ВИДАЛИТИ ПОСТ
             deletePost: (id) => {

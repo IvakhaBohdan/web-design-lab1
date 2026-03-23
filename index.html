@@ -16,7 +16,7 @@
                 <li><a href="index.html" class="font-semibold border-b-2 border-white pb-1">Про додаток</a></li>
                 <li><a href="app.html" class="hover:text-indigo-200 transition">Блог</a></li>
                 <li><a href="profile.html" class="hover:text-indigo-200 transition">Профіль</a></li>
-                <li><a href="login.html" class="hover:text-indigo-200 transition">Вхід</a></li>
+                <li id="nav-auth-link"><a href="login.html" class="hover:text-indigo-200 transition">Вхід</a></li>
             </ul>
         </div>
     </nav>
@@ -32,12 +32,14 @@
         <h1 class="text-4xl font-extrabold text-gray-900 mb-4">Вітаємо у "МійБлог"!</h1>
         <p class="text-lg text-gray-600 max-w-2xl mx-auto mb-8 leading-relaxed">
             Це сучасна платформа для обміну думками та ідеями. Наш Web-додаток дозволяє користувачам створювати власні дописи, читати статті інших авторів та активно обговорювати їх у коментарях. 
-            Проєкт створено в рамках лабораторної роботи з використанням HTML5, CSS3 та фреймворку Tailwind CSS для забезпечення ідеального відображення на будь-яких пристроях.
+            Проєкт створено в рамках лабораторної роботи з використанням архітектури **MVC**, HTML5, CSS3 та Tailwind CSS.
         </p>
 
-        <a href="register.html" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-8 rounded-full shadow-lg transition duration-300 transform hover:scale-105 mb-12">
-            Приєднатися до спільноти
-        </a>
+        <div id="hero-action">
+            <a href="register.html" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-8 rounded-full shadow-lg transition duration-300 transform hover:scale-105 mb-12 inline-block">
+                Приєднатися до спільноти
+            </a>
+        </div>
 
         <div class="mt-4 pt-8 border-t border-gray-300 w-full max-w-lg flex flex-col items-center">
             <p class="text-gray-600 mb-4 text-lg">
@@ -64,6 +66,30 @@
     <script src="View.js"></script>
     <script src="Controller.js"></script>
     <script src="main.js"></script>
-    
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const user = localStorage.getItem('currentUser');
+            const heroAction = document.getElementById('hero-action');
+            const navAuthLink = document.getElementById('nav-auth-link');
+
+            if (user) {
+                // Якщо користувач увійшов:
+                // 1. Змінюємо кнопку на головній
+                heroAction.innerHTML = `
+                    <a href="app.html" class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-full shadow-lg transition duration-300 transform hover:scale-105 mb-12 inline-block">
+                        Перейти до стрічки новин
+                    </a>
+                `;
+                // 2. Змінюємо "Вхід" на "Вихід" у меню
+                navAuthLink.innerHTML = `<a href="login.html" class="hover:text-indigo-200 transition">Вихід</a>`;
+                
+                // Додаємо обробник для кнопки Вихід
+                navAuthLink.querySelector('a').addEventListener('click', () => {
+                    localStorage.removeItem('currentUser');
+                });
+            }
+        });
+    </script>
 </body>
 </html>

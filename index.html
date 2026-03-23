@@ -26,7 +26,6 @@
 <!-- MAIN -->
 <main class="container mx-auto px-4 py-12 flex-grow flex flex-col items-center text-center">
 
-    <!-- ICON -->
     <div class="bg-indigo-100 text-indigo-600 p-6 rounded-full shadow-lg mb-6">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-24 w-24" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -34,10 +33,8 @@
         </svg>
     </div>
 
-    <!-- TITLE -->
     <h1 class="text-4xl font-extrabold mb-4">Вітаємо у "МійБлог"!</h1>
 
-    <!-- TEXT -->
     <p class="text-lg text-gray-600 max-w-2xl mb-8">
         Це сучасна платформа для обміну думками та ідеями. Наш Web-додаток дозволяє користувачам створювати власні дописи, читати статті інших авторів та активно обговорювати їх у коментарях.
         Проєкт створено в рамках лабораторної роботи з використанням архітектури MVC, HTML5, CSS3 та Tailwind CSS.
@@ -76,7 +73,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const nav = document.getElementById('nav-auth');
     const hero = document.getElementById('hero-action');
 
+    if (!nav || !hero) return;
+
+    // 🔐 USER LOGGED IN
     if (user) {
+
         nav.innerHTML = `<a href="#" id="logout-btn">Вихід</a>`;
 
         hero.innerHTML = `
@@ -85,7 +86,24 @@ document.addEventListener('DOMContentLoaded', () => {
                 Перейти до блогу
             </a>
         `;
-    } else {
+
+        // 🔥 ВАЖЛИВО: додаємо listener ПІСЛЯ innerHTML
+        const logoutBtn = document.getElementById('logout-btn');
+
+        if (logoutBtn) {
+            logoutBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+
+                localStorage.removeItem('currentUser');
+
+                window.location.href = 'login.html';
+            });
+        }
+
+    } 
+    // 👤 NOT LOGGED IN
+    else {
+
         nav.innerHTML = `<a href="login.html">Вхід</a>`;
 
         hero.innerHTML = `

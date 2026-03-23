@@ -79,8 +79,10 @@ deletePost(postId) {
     const post = this.posts.find(p => p.id === postId);
     if (!post || !this.currentUser) return;
 
-    // 🔥 ТИМЧАСОВО без перевірки
-    this.posts = this.posts.filter(p => p.id !== postId);
+    if (
+        post.author !== this.currentUser.name &&
+        post.author !== this.currentUser.email
+    ) return;
 
     this._save('posts', this.posts);
 }

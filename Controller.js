@@ -68,16 +68,18 @@ class AppController {
     updateView() {
         const user = this.model.currentUser;
 
+        if (!user) return;
+
         if (this.view.postsContainer) {
-            this.view.displayPosts(this.model.posts, user ? user.name : null);
+            this.view.displayPosts(this.model.posts, user.name);
         }
 
-        if (user && this.view.profileName) {
+        if (this.view.profileName) {
             const count = this.model.posts.filter(
-                p => p.author === user.name
+            p => p.author === user.name
             ).length;
 
-            this.view.displayUserProfile(user, count);
+        this.view.displayUserProfile(user, count);
         }
     }
 }

@@ -51,33 +51,45 @@ class AppView {
         }
 
         if (this.postsContainer) {
-            this.postsContainer.addEventListener('click', e => {
 
-                if (e.target.classList.contains('delete-btn')) {
-                    handlers.deletePost(Number(e.target.dataset.id));
-                }
+    //  КЛІКИ (пости + коментарі)
+    this.postsContainer.addEventListener('click', e => {
 
-                if (e.target.classList.contains('like-btn')) {
-                    handlers.likePost(Number(e.target.dataset.id));
-                }
-            });
-
-            if (this.postsContainer) {
-
-            this.postsContainer.addEventListener('submit', (e) => {
-              if (e.target.classList.contains('comment-form')) {
-               e.preventDefault();
-
-              const postId = Number(e.target.dataset.id);
-              const input = e.target.querySelector('input');
-
-              handlers.addComment(postId, input.value);
-
-              input.value = '';
-               }
-              });
-          }
+        //  Видалити пост
+        if (e.target.classList.contains('delete-btn')) {
+            handlers.deletePost(Number(e.target.dataset.id));
         }
+
+        //  Лайк
+        if (e.target.classList.contains('like-btn')) {
+            handlers.likePost(Number(e.target.dataset.id));
+        }
+
+        //  Видалити коментар
+        if (e.target.classList.contains('delete-comment')) {
+            const postId = Number(e.target.dataset.post);
+            const index = Number(e.target.dataset.index);
+
+            handlers.deleteComment(postId, index);
+        }
+    });
+
+    // 💬 ДОДАТИ КОМЕНТАР
+    this.postsContainer.addEventListener('submit', e => {
+        if (e.target.classList.contains('comment-form')) {
+            e.preventDefault();
+
+            const postId = Number(e.target.dataset.id);
+            const input = e.target.querySelector('input');
+
+            if (input.value.trim() !== '') {
+                handlers.addComment(postId, input.value.trim());
+                input.value = '';
+            }
+        }
+    });
+}
+        
     }
 
     displayPosts(posts, currentUserEmail) {

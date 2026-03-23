@@ -21,29 +21,46 @@
         </div>
     </nav>
 
- <main class="container mx-auto px-4 py-8 flex-grow max-w-4xl">
-    
-    <div class="flex justify-between items-center mb-6">
-        <h1 class="text-3xl font-bold text-gray-900">Нотатки та пригоди</h1>
-        <button id="show-form-btn" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded shadow transition">
-            + Новий запис
-        </button>
-    </div>
-
-    <div class="bg-white p-6 rounded-lg shadow-sm mb-8 border border-gray-200">
-        <h2 class="text-xl font-semibold mb-4 text-indigo-700">Про що ви думаєте сьогодні?</h2>
-        <form id="post-form">
-            <input type="text" id="post-title" required placeholder="Заголовок розповіді..." class="w-full mb-3 px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-indigo-500">
-            <textarea id="post-body" rows="3" required placeholder="Напишіть щось цікаве..." class="w-full mb-3 px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
-            <button type="submit" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-6 rounded transition">
-                Додати на стіну
+    <main class="container mx-auto px-4 py-8 flex-grow max-w-4xl">
+        
+        <div class="flex justify-between items-center mb-6">
+            <h1 class="text-3xl font-bold text-gray-900">Нотатки та пригоди</h1>
+            <button id="show-form-btn" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded shadow transition duration-200">
+                + Новий запис
             </button>
-        </form>
-    </div>
+        </div>
 
-    <div id="posts-container" class="space-y-6"></div>
+        <div id="post-form-container" class="hidden bg-white p-6 rounded-lg shadow-sm mb-8 border border-gray-200 transition-all">
+            <h2 class="text-xl font-semibold mb-4 text-indigo-700">Про що ви думаєте сьогодні?</h2>
+            <form id="post-form">
+                <div class="mb-3">
+                    <input type="text" id="post-title" required 
+                           placeholder="Заголовок розповіді..." 
+                           class="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                </div>
+                <div class="mb-3">
+                    <textarea id="post-body" rows="3" required 
+                              placeholder="Напишіть щось цікаве..." 
+                              class="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
+                </div>
+                <div class="flex space-x-3">
+                    <button type="submit" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-6 rounded transition duration-200">
+                        Опублікувати
+                    </button>
+                    <button type="button" id="cancel-post-btn" class="text-gray-500 hover:text-gray-700 px-4 py-2">
+                        Скасувати
+                    </button>
+                </div>
+            </form>
+        </div>
 
- </main>
+        <div id="posts-container" class="space-y-6">
+            <div class="text-center py-10">
+                <p class="text-gray-500">Завантаження дописів...</p>
+            </div>
+        </div>
+
+    </main>
 
     <footer class="bg-gray-800 text-gray-300 py-6 mt-auto">
         <div class="container mx-auto px-4 text-center">
@@ -56,6 +73,23 @@
     <script src="Controller.js"></script>
     <script src="main.js"></script>
 
+    <script>
+        const showBtn = document.getElementById('show-form-btn');
+        const formContainer = document.getElementById('post-form-container');
+        const cancelBtn = document.getElementById('cancel-post-btn');
+
+        if (showBtn && formContainer) {
+            showBtn.addEventListener('click', () => {
+                formContainer.classList.toggle('hidden');
+            });
+        }
+        
+        if (cancelBtn) {
+            cancelBtn.addEventListener('click', () => {
+                formContainer.classList.add('hidden');
+            });
+        }
+    </script>
+
 </body>
 </html>
-

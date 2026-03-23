@@ -41,7 +41,7 @@ class AppView {
             });
         }
 
-        // 📝 POSTS
+        // 📝 CREATE POST
         if (this.postForm) {
             this.postForm.addEventListener('submit', e => {
                 e.preventDefault();
@@ -56,32 +56,35 @@ class AppView {
         // 💬 POSTS + COMMENTS
         if (this.postsContainer) {
 
-            // КЛІКИ
             this.postsContainer.addEventListener('click', e => {
 
-                // ❌ Видалити пост
-            const btn = e.target.closest('.delete-btn');
-       
-                if (btn) {
-                    console.log('postsContainer:', this.postsContainer);
-                    handlers.deletePost(Number(btn.dataset.id));
-                    }
+                const deleteBtn = e.target.closest('.delete-btn');
+                const likeBtn = e.target.closest('.like-btn');
+                const deleteCommentBtn = e.target.closest('.delete-comment');
 
-                // ❤️ Лайк
-                if (e.target.classList.contains('like-btn')) {
-                    handlers.likePost(Number(e.target.dataset.id));
+                // ❌ DELETE POST
+                if (deleteBtn) {
+                    handlers.deletePost(Number(deleteBtn.dataset.id));
+                    return;
                 }
 
-                // 🗑 Видалити коментар
-                if (e.target.classList.contains('delete-comment')) {
-                    const postId = Number(e.target.dataset.post);
-                    const index = Number(e.target.dataset.index);
+                // ❤️ LIKE
+                if (likeBtn) {
+                    handlers.likePost(Number(likeBtn.dataset.id));
+                    return;
+                }
 
-                    handlers.deleteComment(postId, index);
+                // 🗑 DELETE COMMENT
+                if (deleteCommentBtn) {
+                    handlers.deleteComment(
+                        Number(deleteCommentBtn.dataset.post),
+                        Number(deleteCommentBtn.dataset.index)
+                    );
+                    return;
                 }
             });
 
-            // 💬 ДОДАТИ КОМЕНТАР
+            // 💬 ADD COMMENT
             this.postsContainer.addEventListener('submit', e => {
                 if (e.target.classList.contains('comment-form')) {
                     e.preventDefault();
@@ -97,7 +100,7 @@ class AppView {
             });
         }
 
-        // ✏️ PROFILE EDIT (якщо є)
+        // 👤 PROFILE EDIT
         if (this.editBtn) {
             this.editBtn.onclick = () => this.modal.classList.remove('hidden');
             this.closeModal.onclick = () => this.modal.classList.add('hidden');
@@ -116,6 +119,7 @@ class AppView {
         }
     }
 
+    // 📰 POSTS RENDER
     displayPosts(posts, currentUserName) {
         if (!this.postsContainer) return;
 
@@ -144,7 +148,7 @@ class AppView {
                     <button class="delete-btn text-red-500 ml-3" data-id="${post.id}">
                         Видалити
                     </button>
-                    ` : ''}
+                ` : ''}
 
                 <!-- COMMENTS -->
                 <div class="mt-4">
@@ -188,19 +192,17 @@ class AppView {
         document.getElementById('profile-posts-count').textContent = count;
     }
 
-hidePostForm() {
-    const formContainer = document.getElementById('post-form-container');
-    const titleInput = document.getElementById('post-title');
-    const bodyInput = document.getElementById('post-body');
+    // 📝 HIDE FORM
+    hidePostForm() {
+        const formContainer = document.getElementById('post-form-container');
+        const titleInput = document.getElementById('post-title');
+        const bodyInput = document.getElementById('post-body');
 
-    // очистка
-    if (titleInput) titleInput.value = '';
-    if (bodyInput) bodyInput.value = '';
+        if (titleInput) titleInput.value = '';
+        if (bodyInput) bodyInput.value = '';
 
-    // ховаємо
-    if (formContainer) {
-        formContainer.classList.add('hidden');
+        if (formContainer) {
+            formContainer.classList.add('hidden');
+        }
     }
-}
-    
 }

@@ -39,17 +39,17 @@ class AppModel {
     }
 
     addPost(title, body) {
-        const post = {
-            id: Date.now(),
-            title, body,
-            author: this.currentUser ? this.currentUser.name : 'Гість',
-            authorEmail: this.currentUser ? this.currentUser.email : null,
-            date: new Date().toLocaleDateString('uk-UA'),
-            likes: [],
-            comments: []
-        };
-        this.posts.unshift(post);
-        this._save('posts', this.posts);
+            const post = {
+                id: Date.now(),
+                title,
+                body,
+                author: this.currentUser.name, // 👈 автор
+                likes: [],
+            comments: [] // 👈 важливо
+            };
+
+            this.posts.push(post);
+            this.saveData();
     }
 
     toggleLike(postId) {
@@ -61,13 +61,15 @@ class AppModel {
     }
 
     addComment(postId, text) {
-        const post = this.posts.find(p => p.id === postId);
-        if (!post || !this.currentUser) return;
-        post.comments.push({
-            author: this.currentUser.name,
-            text,
-            date: new Date().toLocaleDateString('uk-UA')
-        });
-        this._save('posts', this.posts);
-    }
+    const post = this.posts.find(p => p.id === postId);
+
+    if (!post) return;
+
+    post.comments.push({
+        author: this.currentUser.name,
+        text
+    });
+
+    this.saveData();
+}
 }

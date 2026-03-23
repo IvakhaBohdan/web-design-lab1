@@ -186,16 +186,17 @@ class AppView {
 
 hidePostForm() {
     const formContainer = document.getElementById('post-form-container');
-    if (formContainer) {
-        formContainer.classList.add('hidden');
-    }
-
-    // очистка полів
     const titleInput = document.getElementById('post-title');
     const bodyInput = document.getElementById('post-body');
 
+    // очистка
     if (titleInput) titleInput.value = '';
     if (bodyInput) bodyInput.value = '';
+
+    // ховаємо
+    if (formContainer) {
+        formContainer.classList.add('hidden');
+    }
 }
     
 }

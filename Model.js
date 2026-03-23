@@ -79,9 +79,7 @@ deletePost(postId) {
     const post = this.posts.find(p => p.id === postId);
     if (!post || !this.currentUser) return;
 
-    // 🔒 тільки автор може видалити
-    if (post.author !== this.currentUser.name) return;
-
+    // 🔥 ТИМЧАСОВО без перевірки
     this.posts = this.posts.filter(p => p.id !== postId);
 
     this._save('posts', this.posts);

@@ -5,7 +5,6 @@ class AppView {
         this.loginForm = document.getElementById('login-form');
         this.registerForm = document.getElementById('register-form');
 
-        // Профіль
         this.profileName = document.getElementById('profile-name');
         this.editBtn = document.getElementById('edit-profile-btn');
         this.modal = document.getElementById('edit-modal');
@@ -13,115 +12,112 @@ class AppView {
         this.closeModal = document.getElementById('close-modal');
     }
 
-    // ================= POSTS =================
-    displayPosts(posts, currentUserEmail) {
-        if (!this.postsContainer) return;
-
-        this.postsContainer.innerHTML = posts.map(post => {
-            const isLiked = post.likes && post.likes.includes(currentUserEmail);
-
-            return `
-            <article class="bg-white p-6 rounded-lg shadow-sm border mb-6">
-                <h2 class="text-xl font-bold">${post.title}</h2>
-                <p class="text-gray-700">${post.body}</p>
-
-                <button class="like-btn" data-id="${post.id}">
-                    ${isLiked ? '❤️' : '🤍'} (${post.likes.length})
-                </button>
-
-                <button class="delete-btn text-red-500" data-id="${post.id}">
-                    Видалити
-                </button>
-            </article>`;
-        }).join('');
-    }
-
-    // ================= PROFILE =================
-    displayUserProfile(user, count) {
-        if (!this.profileName || !user) return;
-
-        this.profileName.textContent = user.name;
-
-        document.getElementById('profile-table-name').textContent = user.name;
-        document.getElementById('profile-table-email').textContent = user.email;
-
-        document.getElementById('profile-posts-count').textContent = count;
-
-        const genders = { male: 'Чоловіча', female: 'Жіноча', other: 'Інше' };
-
-        document.getElementById('profile-table-gender').textContent =
-            genders[user.gender] || 'Не вказано';
-
-        document.getElementById('profile-table-dob').textContent =
-            user.dob ? new Date(user.dob).toLocaleDateString('uk-UA') : 'Не вказано';
-    }
-
-    // ================= EVENTS =================
     bindEvents(handlers) {
 
-        // 🔐 LOGIN
         if (this.loginForm) {
-            this.loginForm.onsubmit = (e) => {
+            this.loginForm.addEventListener('submit', e => {
                 e.preventDefault();
 
-                const email = document.getElementById('email').value;
-                const password = document.getElementById('password').value;
-
-                handlers.login(email, password);
-            };
+                handlers.login(
+                    document.getElementById('email').value,
+                    document.getElementById('password').value
+                );
+            });
         }
 
-        // 📝 REGISTER
         if (this.registerForm) {
-            this.registerForm.onsubmit = (e) => {
+            this.registerForm.addEventListener('submit', e => {
                 e.preventDefault();
 
-                const userData = {
+                handlers.register({
                     name: document.getElementById('name').value,
                     email: document.getElementById('email').value,
                     password: document.getElementById('password').value,
                     gender: document.getElementById('gender').value,
                     dob: document.getElementById('dob').value
-                };
-
-                handlers.register(userData);
-            };
+                });
+            });
         }
 
-        // ✏️ EDIT PROFILE
-        if (this.editBtn) {
-            this.editBtn.onclick = () => this.modal.classList.remove('hidden');
-            this.closeModal.onclick = () => this.modal.classList.add('hidden');
-
-            this.editForm.onsubmit = (e) => {
+        if (this.postForm) {
+            this.postForm.addEventListener('submit', e => {
                 e.preventDefault();
 
-                handlers.updateProfile({
-                    name: document.getElementById('edit-name').value,
-                    gender: document.getElementById('edit-gender').value,
-                    dob: document.getElementById('edit-dob').value
-                });
-
-                this.modal.classList.add('hidden');
-            };
+                handlers.addPost(
+                    document.getElementById('post-title').value,
+                    document.getElementById('post-body').value
+                );
+            });
         }
 
-        this.commonEvents(handlers);
+        if (this.postsContainer) {
+            this.postsContainer.addEventListener('click', e => {
+
+                if (e.target.classList.contains('delete-btn')) {
+                    handlers.deletePost(Number(e.target.dataset.id));
+                }
+
+                if (e.target.classList.contains('like-btn')) {
+                    handlers.likePost(Number(e.target.dataset.id));
+                }
+            });
+
+            this.postsContainer.addEventListener('submit', e => {
+                if (e.target.classList.contains('comment-form')) {
+                    e.preventDefault();
+
+                    const id = Number(e.target.dataset.id);
+                    const text = e.target.querySelector('input').value;
+
+                    handlers.addComment(id, text);
+                    e.target.reset();
+                }
+            });
+        }
     }
 
-    commonEvents(handlers) {
+    displayPosts(posts, currentUserEmail) {
         if (!this.postsContainer) return;
 
-        this.postsContainer.onclick = (e) => {
-            const id = parseInt(e.target.dataset.id);
+        this.postsContainer.innerHTML = posts.map(post => {
+            const isLiked = post.likes.includes(currentUserEmail);
 
-            if (e.target.classList.contains('delete-btn')) {
-                handlers.deletePost(id);
-            }
+            return `
+            <article class="bg-white p-6 rounded-lg shadow-sm border mb-6">
+                <div class="flex justify-between">
+                    <h2 class="text-xl font-bold">${post.title}</h2>
+                    <button class="delete-btn text-red-500" data-id="${post.id}">
+                        Видалити
+                    </button>
+                </div>
 
-            if (e.target.classList.contains('like-btn')) {
-                handlers.likePost(id);
-            }
-        };
+                <p class="mt-3">${post.body}</p>
+
+                <button class="like-btn mt-3 text-sm ${isLiked ? 'text-red-600' : ''}" data-id="${post.id}">
+                    ❤️ ${post.likes.length}
+                </button>
+
+                <div class="mt-4">
+                    ${post.comments.map(c => `
+                        <p class="text-sm"><b>${c.author}:</b> ${c.text}</p>
+                    `).join('')}
+                </div>
+
+                <form class="comment-form mt-2" data-id="${post.id}">
+                    <input type="text" placeholder="Коментар..." required>
+                </form>
+            </article>
+            `;
+        }).join('');
+    }
+
+    displayUserProfile(user, count) {
+        if (!this.profileName) return;
+
+        this.profileName.textContent = user.name;
+
+        document.getElementById('profile-table-name').textContent = user.name;
+        document.getElementById('profile-table-email').textContent = user.email;
+        document.getElementById('profile-posts-count').textContent = count;
     }
 }

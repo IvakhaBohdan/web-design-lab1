@@ -10,34 +10,24 @@ class AppController {
             register: (userData) => {
                 const res = this.model.registerUser(userData);
                 if (res.success) {
-                    // Зберігаємо як поточного і йдемо в профіль
                     this.model.loginUser(userData.email, userData.password);
-                    window.location.href = 'profile.html';
+                    window.location.href = 'profile.html'; // Перехід на профіль після реєстрації
                 } else {
-                    alert('Помилка реєстрації або користувач вже існує');
+                    alert('Помилка реєстрації або користувач з таким email вже існує');
                 }
             },
             login: (email, password) => {
                 if (this.model.loginUser(email, password)) {
-                    window.location.href = 'app.html';
+                    window.location.href = 'profile.html'; // Перехід на профіль після логіну
                 } else {
                     alert('Невірний пароль або email');
                 }
             },
             addPost: (t, b) => this.model.addPost(t, b),
             deletePost: (id) => this.model.deletePost(id),
-            updateProfile: (data) => this.model.updateUser(data)
+            updateProfile: (data) => this.model.updateUser(data),
+            likePost: (id) => this.model.toggleLike(id),      // Додано обробку лайків
+            addComment: (id, text) => this.model.addComment(id, text) // Додано обробку коментарів
         });
-    }
-
-    updateView() {
-        const user = this.model.currentUser;
-        if (this.view.postsContainer) {
-            this.view.displayPosts(this.model.posts, user ? user.email : null);
-        }
-        if (user && this.view.profileName) {
-            const count = this.model.posts.filter(p => p.author === user.name).length;
-            this.view.displayUserProfile(user, count);
-        }
     }
 }

@@ -60,9 +60,11 @@ class AppView {
             this.postsContainer.addEventListener('click', e => {
 
                 // ❌ Видалити пост
-                if (e.target.closest('.delete-btn')) {
-                    handlers.deletePost(Number(e.target.dataset.id));
-                }
+            const btn = e.target.closest('.delete-btn');
+
+                if (btn) {
+                    handlers.deletePost(Number(btn.dataset.id));
+                    }
 
                 // ❤️ Лайк
                 if (e.target.classList.contains('like-btn')) {

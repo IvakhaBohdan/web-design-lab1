@@ -113,7 +113,6 @@ class AppView {
         }
     }
 
-    // 🔥 РЕНДЕР ПОСТІВ (FIXED)
     displayPosts(posts, currentUserName) {
         if (!this.postsContainer) return;
 
@@ -184,4 +183,19 @@ class AppView {
         document.getElementById('profile-table-email').textContent = user.email;
         document.getElementById('profile-posts-count').textContent = count;
     }
+
+hidePostForm() {
+    const formContainer = document.getElementById('post-form-container');
+    if (formContainer) {
+        formContainer.classList.add('hidden');
+    }
+
+    // очистка полів
+    const titleInput = document.getElementById('post-title');
+    const bodyInput = document.getElementById('post-body');
+
+    if (titleInput) titleInput.value = '';
+    if (bodyInput) bodyInput.value = '';
+}
+    
 }

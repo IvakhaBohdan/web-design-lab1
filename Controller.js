@@ -40,6 +40,7 @@ class AppController {
 
             addComment: (postId, text) => {
                 this.model.addComment(postId, text);
+                this.updateView();
             },
 
             updateProfile: (data) => {

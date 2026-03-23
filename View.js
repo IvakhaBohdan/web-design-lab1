@@ -61,8 +61,9 @@ class AppView {
 
                 // ❌ Видалити пост
             const btn = e.target.closest('.delete-btn');
-
+       
                 if (btn) {
+                    console.log('postsContainer:', this.postsContainer);
                     handlers.deletePost(Number(btn.dataset.id));
                     }
 

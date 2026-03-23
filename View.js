@@ -60,8 +60,8 @@ class AppView {
             this.postsContainer.addEventListener('click', e => {
 
                 // ❌ Видалити пост
-                if (e.target.classList.contains('delete-btn')) {
-                    handlers.deletePost(Number(e.target.dataset.id));
+                if (e.target.closest('.delete-btn')) {
+                    handlers.deletePost(Number(btn.dataset.id));
                 }
 
                 // ❤️ Лайк
@@ -118,7 +118,6 @@ class AppView {
 
         this.postsContainer.innerHTML = posts.map(post => {
 
-            // FIX старих постів
             const likes = post.likes || [];
             const comments = post.comments || [];
 
@@ -138,9 +137,11 @@ class AppView {
                     ${isLiked ? '❤️' : '🤍'} ${likes.length}
                 </button>
 
-                <button class="delete-btn text-red-500 ml-3" data-id="${post.id}">
-                    Видалити
-                </button>
+                ${post.author === currentUserName ? `
+                    <button class="delete-btn text-red-500 ml-3" data-id="${post.id}">
+                        Видалити
+                    </button>
+                    ` : ''}
 
                 <!-- COMMENTS -->
                 <div class="mt-4">

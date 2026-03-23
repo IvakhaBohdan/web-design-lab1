@@ -61,7 +61,7 @@ class AppView {
 
                 // ❌ Видалити пост
                 if (e.target.closest('.delete-btn')) {
-                    handlers.deletePost(Number(btn.dataset.id));
+                    handlers.deletePost(Number(e.target.dataset.id));
                 }
 
                 // ❤️ Лайк

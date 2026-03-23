@@ -1,9 +1,11 @@
 class AppModel {
     constructor() {
-        this.posts = JSON.parse(localStorage.getItem('posts')) || [];
         this.users = JSON.parse(localStorage.getItem('users')) || [];
-        this.currentUser = JSON.parse(localStorage.getItem('currentUser')) || null;
-        this.onDataChanged = null;
+        this.posts = JSON.parse(localStorage.getItem('posts')) || [];
+
+        this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+
+        this.onDataChanged = () => {};
     }
 
     _save(key, data) {
@@ -22,12 +24,13 @@ class AppModel {
 
     loginUser(email, password) {
         const user = this.users.find(u => u.email === email && u.password === password);
-        if (user) {
-            this.currentUser = user;
-            this._save('currentUser', user);
-            return true;
-        }
-        return false;
+
+        if (!user) return false;
+
+        this.currentUser = user;
+        localStorage.setItem('currentUser', JSON.stringify(user));
+
+        return true;
     }
 
     updateUser(newData) {

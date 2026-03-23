@@ -36,6 +36,7 @@ class AppController {
             // 📝 ДОДАТИ ПОСТ
             addPost: (title, body) => {
                 this.model.addPost(title, body);
+                this.view.hidePostForm();
             },
 
             // ❌ ВИДАЛИТИ ПОСТ

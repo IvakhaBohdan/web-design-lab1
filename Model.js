@@ -53,9 +53,9 @@ class AppModel {
                 id: Date.now(),
                 title,
                 body,
-                author: this.currentUser.name, // 👈 автор
+                 author: this.currentUser ? this.currentUser.name : 'Анонім',
                 likes: [],
-            comments: [] // 👈 важливо
+            comments: [] 
             };
 
             this.posts.push(post);

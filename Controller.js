@@ -7,14 +7,15 @@ class AppController {
         this.updateView();
 
         this.view.bindEvents({
-            register: (userData) => {
-                const res = this.model.registerUser(userData);
-                if (res.success) {
-                    this.model.loginUser(userData.email, userData.password);
-                    window.location.href = 'profile.html'; // Перехід на профіль після реєстрації
-                } else {
-                    alert('Помилка реєстрації або користувач з таким email вже існує');
-                }
+            // Знайдіть у Controller.js блок register:
+        register: (userData) => {
+            const result = this.model.registerUser(userData);
+            if (result.success) {
+                alert('Реєстрація успішна! Тепер увійдіть.');
+                window.location.href = 'login.html';
+            } else {
+                alert('Цей Email вже зареєстровано!');
+            }    
             },
             login: (email, password) => {
                 if (this.model.loginUser(email, password)) {

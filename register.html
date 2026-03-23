@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Реєстрація - МійБлог</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="style.css">
 </head>
 <body class="flex flex-col min-h-screen bg-gray-100 font-sans text-gray-800">
 
@@ -40,10 +39,9 @@
                 </div>
                 <div class="mb-4">
                     <label for="gender" class="block text-gray-700 text-sm font-bold mb-2">Стать</label>
-                    <select id="gender" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white">
+                    <select id="gender" class="w-full px-3 py-2 border rounded-lg bg-white">
                         <option value="male">Чоловіча</option>
                         <option value="female">Жіноча</option>
-                        <option value="other">Інше</option>
                     </select>
                 </div>
                 <div class="mb-6">
@@ -51,22 +49,12 @@
                     <input type="date" id="dob" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
                 </div>
                 
-                <button type="submit" class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg transition duration-200">
+                <button type="submit" class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg transition">
                     Зареєструватися
                 </button>
             </form>
-
-            <p class="text-center text-sm text-gray-600 mt-4">
-                Вже є акаунт? <a href="login.html" class="text-indigo-600 hover:underline">Увійти</a>
-            </p>
         </div>
     </main>
-
-    <footer class="bg-gray-800 text-gray-300 py-6 mt-auto">
-        <div class="container mx-auto px-4 text-center">
-            <p>&copy; 2026 Лабораторна робота №1.</p>
-        </div>
-    </footer>
 
     <script src="Model.js"></script>
     <script src="View.js"></script>

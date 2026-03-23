@@ -106,11 +106,22 @@ class AppView {
 
             <!-- COMMENTS -->
             <div class="mt-4">
-                ${post.comments.map(c => `
-                    <div class="text-sm border-t pt-2 mt-2">
-                        <b>${c.author}:</b> ${c.text}
+               ${post.comments.map((c, i) => `
+                    <div class="text-sm border-t pt-2 mt-2 flex justify-between items-center">
+                    <span><b>${c.author}:</b> ${c.text}</span>
+        
+                    ${
+                        c.author === currentUserEmail ||
+                        post.author === currentUserEmail
+                        ? `<button class="delete-comment text-red-500 text-xs" 
+                           data-post="${post.id}" 
+                           data-index="${i}">
+                        ✖
+                           </button>`
+                        : ''
+                            }
                     </div>
-                `).join('')}
+                    `).join('')}
             </div>
 
             <!-- ADD COMMENT -->

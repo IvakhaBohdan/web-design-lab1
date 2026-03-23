@@ -67,17 +67,29 @@ class AppView {
     }).join('');
 }
 
-    displayUserProfile(user, count) {
-        if (!this.profileName || !user) return;
-        this.profileName.textContent = user.name;
-        document.getElementById('profile-table-name').textContent = user.name;
-        document.getElementById('profile-table-email').textContent = user.email;
-        document.getElementById('profile-posts-count').textContent = count;
-        
-        const genders = { male: 'Чоловіча', female: 'Жіноча', other: 'Інше' };
-        document.getElementById('profile-table-gender').textContent = genders[user.gender] || 'Не вказано';
-        document.getElementById('profile-table-dob').textContent = new Date(user.dob).toLocaleDateString('uk-UA');
+    displayUserProfile(user, postsCount) {
+    if (!this.profileName) return; // Перевірка, що ми саме на сторінці профілю
+
+    // Відображаємо ПІБ у шапці та таблиці
+    this.profileName.textContent = user.name;
+    const tableName = document.getElementById('profile-table-name');
+    const tableEmail = document.getElementById('profile-table-email');
+    const tableGender = document.getElementById('profile-table-gender');
+    const tableDob = document.getElementById('profile-table-dob');
+    const postsCounter = document.getElementById('profile-posts-count');
+
+    if (tableName) tableName.textContent = user.name;
+    if (tableEmail) tableEmail.textContent = user.email;
+    if (tableGender) tableGender.textContent = user.gender === 'male' ? 'Чоловіча' : 'Жіноча';
+    if (tableDob) tableDob.textContent = user.dob;
+    if (postsCounter) postsCounter.textContent = postsCount;
+    
+    // Оновлення аватара
+    const avatar = document.querySelector('img[alt="Фото профілю"]');
+    if (avatar) {
+        avatar.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}&background=4f46e5&color=fff&size=128`;
     }
+}
 
    bindEvents(handlers) {
         // 1. Обробка форми реєстрації

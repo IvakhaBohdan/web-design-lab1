@@ -69,10 +69,7 @@ class AppController {
         const user = this.model.currentUser;
 
         if (this.view.postsContainer) {
-            this.view.displayPosts(
-                this.model.posts,
-                user ? user.email : null
-            );
+            this.view.displayPosts(this.model.posts, user ? user.name : null);
         }
 
         if (user && this.view.profileName) {

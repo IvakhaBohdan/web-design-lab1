@@ -41,25 +41,18 @@ class AppModel {
         this._save('currentUser', this.currentUser);
     }
 
-    saveData() {
-        localStorage.setItem('users', JSON.stringify(this.users));
-        localStorage.setItem('posts', JSON.stringify(this.posts));
-
-        this.onDataChanged(); 
-    }
-
     addPost(title, body) {
             const post = {
                 id: Date.now(),
                 title,
                 body,
-                 author: this.currentUser ? this.currentUser.name : 'Анонім',
+                 author: this.currentUser.name,
                 likes: [],
             comments: [] 
             };
 
             this.posts.push(post);
-            this.saveData();
+            this._save('posts', this.posts);
     }
 
     toggleLike(postId) {
@@ -79,7 +72,7 @@ class AppModel {
         author: this.currentUser.name,
         text
     });
-    this.saveData();
+     this._save('posts', this.posts);
 }
     deleteComment(postId, index) {
     const post = this.posts.find(p => p.id === postId);
@@ -92,7 +85,7 @@ class AppModel {
         post.author === this.currentUser.name
     ) {
         post.comments.splice(index, 1);
-        this.saveData();
+        this._save('posts', this.posts);
     }
 }
 }

@@ -55,7 +55,8 @@ class AppModel {
                 id: Date.now(),
                 title,
                 body,
-                 author: this.currentUser.name,
+                 author: this.currentUser.email,
+                 authorName: this.currentUser.name
                 likes: [],
             comments: [] 
             };
@@ -85,7 +86,8 @@ class AppModel {
     if (!post) return;
 
     post.comments.push({
-        author: this.currentUser.name,
+        author: this.currentUser.email,
+        authorName: this.currentUser.name
         text
     });
      this._save('posts', this.posts);

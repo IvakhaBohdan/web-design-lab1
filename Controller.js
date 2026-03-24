@@ -81,13 +81,12 @@ class AppController {
                 this.model.updateUser(data);
                 this.updateView();
             }
-        });
 
-        updateAvatar: (base64) => {
+         updateAvatar: (base64) => {
         this.model.updateAvatar(base64);
-        }
-
-        
+        }            
+     });
+   
     }
 
     //  ОНОВЛЕННЯ UI

@@ -183,5 +183,26 @@ getUserStats() {
     this._save('posts', this.posts);
     this._save('currentUser', this.currentUser);
 }
+
+editPost(postId, newText) {
+    const post = this.posts.find(p => p.id === postId);
+    if (!post || post.author !== this.currentUser.email) return;
+
+    post.body = newText;
+    this._save('posts', this.posts);
+}
+
+editComment(postId, index, newText) {
+    const post = this.posts.find(p => p.id === postId);
+    if (!post) return;
+
+    const comment = post.comments[index];
+
+    if (comment.author !== this.currentUser.email) return;
+
+    comment.text = newText;
+    this._save('posts', this.posts);
+}
+    
     
 }

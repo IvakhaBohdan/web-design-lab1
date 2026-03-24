@@ -3,7 +3,7 @@ class AppController {
         this.model = model;
         this.view = view;
 
-        // 🔄 підписка на зміни даних
+        //  підписка на зміни даних
         this.model.bindDataChanged(() => this.updateView());
 
         // перший рендер
@@ -86,22 +86,21 @@ class AppController {
 
     //  ОНОВЛЕННЯ UI
     updateView() {
-        const user = this.model.currentUser;
+    const user = this.model.currentUser;
 
-        if (!user) return;
+    if (!user) return;
 
-        //  Пости
-        if (this.view.postsContainer) {
-            this.view.displayPosts(this.model.posts, user.name);
-        }
-
-        //  Профіль
-        if (this.view.profileName) {
-            const count = this.model.posts.filter(
-                p => p.author === user.name
-            ).length;
-
-            this.view.displayUserProfile(user, count);
-        }
+    //  Пости
+    if (this.view.postsContainer) {
+        this.view.displayPosts(this.model.posts, user.name);
     }
+
+    //  Профіль
+    if (this.view.profileName) {
+
+        const stats = this.model.getUserStats();
+
+        this.view.displayUserProfile(user, stats);
+    }
+ }
 }

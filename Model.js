@@ -17,7 +17,10 @@ class AppModel {
 
     registerUser(userData) {
         if (this.users.find(u => u.email === userData.email)) return { success: false };
-        this.users.push(userData);
+        this.users.push({
+            ...userData,
+            createdAt: Date.now()
+            });
         this._save('users', this.users);
         return { success: true };
     }

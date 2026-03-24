@@ -52,7 +52,7 @@ class AppController {
 
             hidePostForm: () => {
                 this.view.hidePostForm();
-            }
+            },
 
             //  ВИДАЛИТИ ПОСТ
             deletePost: (id) => {

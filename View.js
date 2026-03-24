@@ -88,6 +88,8 @@ class AppView {
                 const deleteBtn = e.target.closest('.delete-btn');
                 const likeBtn = e.target.closest('.like-btn');
                 const deleteCommentBtn = e.target.closest('.delete-comment');
+                const editPostBtn = e.target.closest('.edit-post');
+                const editCommentBtn = e.target.closest('.edit-comment');
 
                 //  DELETE POST
                 if (deleteBtn) {
@@ -125,6 +127,31 @@ class AppView {
                     }
                 }
             });
+
+// EDIT POST
+if (editPostBtn) {
+    const newText = prompt('Новий текст поста:');
+
+    if (newText) {
+        handlers.editPost(Number(editPostBtn.dataset.id), newText);
+    }
+    return;
+}
+
+// EDIT COMMENT
+if (editCommentBtn) {
+    const newText = prompt('Новий коментар:');
+
+    if (newText) {
+        handlers.editComment(
+            Number(editCommentBtn.dataset.post),
+            Number(editCommentBtn.dataset.index),
+            newText
+        );
+    }
+    return;
+}
+        
         }
 
         //  PROFILE EDIT
@@ -144,6 +171,28 @@ class AppView {
                 this.modal.classList.add('hidden');
             };
         }
+
+        const avatarInput = document.getElementById('avatar-upload');
+        
+        if (avatarInput) {
+            avatarInput.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+        
+                if (!file) return;
+        
+                const reader = new FileReader();
+        
+                reader.onload = () => {
+                    handlers.updateProfile({
+                        avatar: reader.result
+                    });
+                };
+        
+                reader.readAsDataURL(file);
+            });
+        }
+
+        
     }
 
     //  POSTS RENDER
@@ -160,8 +209,9 @@ class AppView {
         return `
         <article class="bg-white p-6 rounded-lg shadow-sm border mb-6">
 
-            <div class="flex justify-between items-center">
-                <h2 class="text-xl font-bold">${post.title}</h2>
+            <div class="flex items-center gap-2">
+                <img src="${post.authorAvatar || 'https://ui-avatars.com/api/?name=' + post.authorName}" 
+                 class="w-8 h-8 rounded-full">
                 <span class="text-sm text-gray-500">✍ ${post.authorName}</span>
             </div>
 
@@ -174,15 +224,33 @@ class AppView {
             ${post.author === currentUser.email ? `
                 <button class="delete-btn text-red-500 ml-3" data-id="${post.id}">
                     Видалити
+                 </button>
+
+                 <button class="edit-post text-blue-500 ml-2" data-id="${post.id}">
+                    Редагувати
                 </button>
-            ` : ''}
+                ` : ''}
 
             <!-- COMMENTS -->
             <div class="mt-4">
                 ${comments.map((c, i) => `
                     <div class="text-sm border-t pt-2 mt-2 flex justify-between items-center">
+                    <div class="flex items-center gap-2">
+                        <img src="${c.authorAvatar || 'https://ui-avatars.com/api/?name=' + c.authorName}" 
+                             class="w-6 h-6 rounded-full">
                         <span><b>${c.authorName}:</b> ${c.text}</span>
+                    </div>
 
+                        ${
+                            c.author === currentUser.email
+                            ? `<button class="edit-comment text-blue-500 text-xs mr-2"
+                                    data-post="${post.id}" 
+                                    data-index="${i}">
+                                    ✏
+                               </button>`
+                            : ''
+                        }
+                        
                         ${
                             c.author === currentUser.email ||
                             post.author === currentUser.email
@@ -221,7 +289,7 @@ class AppView {
     document.getElementById('profile-table-gender').textContent = user.gender || '-';
     document.getElementById('profile-table-dob').textContent = user.dob || '-';
 
-    //  СТАТИСТИКА (вже порахована в Model)
+    //  СТАТИСТИКА
     document.getElementById('profile-posts-count').textContent = stats.posts;
     document.getElementById('profile-comments-count').textContent = stats.comments;
     document.getElementById('profile-likes-count').textContent = stats.likes;
@@ -230,6 +298,14 @@ class AppView {
     const created = new Date(user.createdAt || Date.now());
     const days = Math.floor((Date.now() - created) / (1000 * 60 * 60 * 24));
     document.getElementById('profile-days-count').textContent = days || 1;
+
+
+        const avatar = document.getElementById('profile-avatar');
+
+            if (avatar) {
+                avatar.src = user.avatar || 
+                    `https://ui-avatars.com/api/?name=${user.name}`;
+            }
 }
 
     //  HIDE FORM

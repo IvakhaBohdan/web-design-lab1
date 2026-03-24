@@ -147,66 +147,66 @@ class AppView {
     }
 
     //  POSTS RENDER
-    displayPosts(posts, currentUserName) {
-        if (!this.postsContainer) return;
+    displayPosts(posts, currentUser) {
+    if (!this.postsContainer) return;
 
-        this.postsContainer.innerHTML = posts.map(post => {
+    this.postsContainer.innerHTML = posts.map(post => {
 
-            const likes = post.likes || [];
-            const comments = post.comments || [];
+        const likes = post.likes || [];
+        const comments = post.comments || [];
 
-            const isLiked = likes.includes(currentUserName);
+        const isLiked = likes.includes(currentUser.email);
 
-            return `
-            <article class="bg-white p-6 rounded-lg shadow-sm border mb-6">
+        return `
+        <article class="bg-white p-6 rounded-lg shadow-sm border mb-6">
 
-                <div class="flex justify-between items-center">
-                    <h2 class="text-xl font-bold">${post.title}</h2>
-                    <span class="text-sm text-gray-500">✍ ${post.author}</span>
-                </div>
+            <div class="flex justify-between items-center">
+                <h2 class="text-xl font-bold">${post.title}</h2>
+                <span class="text-sm text-gray-500">✍ ${post.authorName}</span>
+            </div>
 
-                <p class="mt-3">${post.body}</p>
+            <p class="mt-3">${post.body}</p>
 
-                <button class="like-btn mt-3" data-id="${post.id}">
-                    ${isLiked ? '❤️' : '🤍'} ${likes.length}
+            <button class="like-btn mt-3" data-id="${post.id}">
+                ${isLiked ? '❤️' : '🤍'} ${likes.length}
+            </button>
+
+            ${post.author === currentUser.email ? `
+                <button class="delete-btn text-red-500 ml-3" data-id="${post.id}">
+                    Видалити
                 </button>
+            ` : ''}
 
-                ${post.author === currentUserName ? `
-                    <button class="delete-btn text-red-500 ml-3" data-id="${post.id}">
-                        Видалити
-                    </button>
-                ` : ''}
+            <!-- COMMENTS -->
+            <div class="mt-4">
+                ${comments.map((c, i) => `
+                    <div class="text-sm border-t pt-2 mt-2 flex justify-between items-center">
+                        <span><b>${c.authorName}:</b> ${c.text}</span>
 
-                <!-- COMMENTS -->
-                <div class="mt-4">
-                    ${comments.map((c, i) => `
-                        <div class="text-sm border-t pt-2 mt-2 flex justify-between items-center">
-                            <span><b>${c.author}:</b> ${c.text}</span>
+                        ${
+                            c.author === currentUser.email ||
+                            post.author === currentUser.email
+                            ? `<button class="delete-comment text-red-500 text-xs" 
+                                    data-post="${post.id}" 
+                                    data-index="${i}">
+                                    ✖
+                               </button>`
+                            : ''
+                        }
+                    </div>
+                `).join('')}
+            </div>
 
-                            ${
-                                c.author === currentUserName ||
-                                post.author === currentUserName
-                                ? `<button class="delete-comment text-red-500 text-xs" 
-                                        data-post="${post.id}" 
-                                        data-index="${i}">
-                                        ✖
-                                   </button>`
-                                : ''
-                            }
-                        </div>
-                    `).join('')}
-                </div>
+            <!-- ADD COMMENT -->
+            <form class="comment-form mt-3" data-id="${post.id}">
+                <input type="text" placeholder="Написати коментар..."
+                       class="border p-2 w-full rounded" required>
+            </form>
 
-                <!-- ADD COMMENT -->
-                <form class="comment-form mt-3" data-id="${post.id}">
-                    <input type="text" placeholder="Написати коментар..."
-                           class="border p-2 w-full rounded" required>
-                </form>
-
-            </article>
-            `;
-        }).join('');
-    }
+        </article>
+        `;
+    }).join('');
+}
 
     //  PROFILE
     displayUserProfile(user, stats) {

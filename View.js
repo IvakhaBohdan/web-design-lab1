@@ -209,7 +209,7 @@ class AppView {
     }
 
     //  PROFILE
-    displayUserProfile(user, posts) {
+    displayUserProfile(user, stats) {
     if (!this.profileName || !user) return;
 
     // Ім'я
@@ -221,21 +221,12 @@ class AppView {
     document.getElementById('profile-table-gender').textContent = user.gender || '-';
     document.getElementById('profile-table-dob').textContent = user.dob || '-';
 
-    //  СТАТИСТИКА
+    //  СТАТИСТИКА (вже порахована в Model)
+    document.getElementById('profile-posts-count').textContent = stats.posts;
+    document.getElementById('profile-comments-count').textContent = stats.comments;
+    document.getElementById('profile-likes-count').textContent = stats.likes;
 
-    // Пости
-    const userPosts = posts.filter(p => p.author === user.name);
-    document.getElementById('profile-posts-count').textContent = userPosts.length;
-
-    // Коментарі
-    const commentsCount = userPosts.reduce((sum, p) => sum + (p.comments?.length || 0), 0);
-    document.getElementById('profile-comments-count').textContent = commentsCount;
-
-    // Лайки
-    const likesCount = userPosts.reduce((sum, p) => sum + (p.likes?.length || 0), 0);
-    document.getElementById('profile-likes-count').textContent = likesCount;
-
-    // Дні на сайті (простий варіант)
+    // Дні на сайті
     const created = new Date(user.createdAt || Date.now());
     const days = Math.floor((Date.now() - created) / (1000 * 60 * 60 * 24));
     document.getElementById('profile-days-count').textContent = days || 1;

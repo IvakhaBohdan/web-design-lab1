@@ -82,6 +82,12 @@ class AppController {
                 this.updateView();
             }
         });
+
+        updateAvatar: (base64) => {
+        this.model.updateAvatar(base64);
+        }
+
+        
     }
 
     //  ОНОВЛЕННЯ UI

@@ -32,7 +32,7 @@ document.addEventListener('click', (e) => {
         e.preventDefault();
         handlers.logout();
     }
-});}
+});
 
         //  REGISTER
         if (this.registerForm) {

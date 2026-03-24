@@ -56,7 +56,6 @@ class AppModel {
 
         this.currentUser = { ...this.currentUser, ...newData };
 
-        // 🔥 оновлення імені в постах/коментарях
         if (newData.name) {
             this.posts = this.posts.map(post => {
 
@@ -91,6 +90,7 @@ class AppModel {
             author: this.currentUser.email,
             authorName: this.currentUser.name,
             authorAvatar: this.currentUser.avatar,
+            createdAt: Date.now(),
             likes: [],
             comments: []
         };
@@ -126,7 +126,8 @@ class AppModel {
             author: this.currentUser.email,
             authorName: this.currentUser.name,
             authorAvatar: this.currentUser.avatar,
-            text
+            text,
+            createdAt: Date.now()
         });
 
         this._save('posts', this.posts);

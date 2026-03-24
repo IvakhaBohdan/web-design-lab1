@@ -6,15 +6,18 @@ class AppModel {
         this.onDataChanged = () => {};
     }
 
+    // Допоміжний метод для збереження даних у localStorage та виклику оновлення
     _save(key, data) {
         localStorage.setItem(key, JSON.stringify(data));
         this.onDataChanged();
     }
 
+    //Реєстрація функції зворотного виклику для сповіщення про зміну стану
     bindDataChanged(callback) {
         this.onDataChanged = callback;
     }
 
+    // Реєстрація нового користувача з перевіркою на унікальність email
     registerUser(userData) {
         if (this.users.find(u => u.email === userData.email)) {
             return { success: false };
@@ -30,6 +33,7 @@ class AppModel {
         return { success: true };
     }
 
+    // Авторизація користувача та збереження поточної сесії
     loginUser(email, password) {
         const user = this.users.find(u => u.email === email && u.password === password);
         if (!user) return false;
@@ -39,12 +43,14 @@ class AppModel {
         return true;
     }
 
+    // Вихід із системи та очищення даних поточної сесії
     logoutUser() {
         this.currentUser = null;
         localStorage.removeItem('currentUser');
         this.onDataChanged();
     }
 
+    // Оновлення даних профілю та синхронізація імені в усіх постах і коментарях
     updateUser(newData) {
         if (!this.currentUser) return;
 
@@ -80,6 +86,7 @@ class AppModel {
         this._save('currentUser', this.currentUser);
     }
 
+    // Створення нового допису від імені поточного користувача
     addPost(title, body) {
         if (!this.currentUser) return;
 
@@ -99,6 +106,7 @@ class AppModel {
         this._save('posts', this.posts);
     }
 
+    //Перемикання лайка (додавання або видалення) для поста
     toggleLike(postId) {
         if (!this.currentUser) return;
 
@@ -116,6 +124,7 @@ class AppModel {
         this._save('posts', this.posts);
     }
 
+    // Додавання коментаря до конкретного допису
     addComment(postId, text) {
         if (!this.currentUser) return;
 
@@ -133,6 +142,7 @@ class AppModel {
         this._save('posts', this.posts);
     }
 
+    // Видалення допису
     deletePost(postId) {
         if (!this.currentUser) return;
 
@@ -143,6 +153,7 @@ class AppModel {
         this._save('posts', this.posts);
     }
 
+    // Видалення коментаря 
     deleteComment(postId, index) {
         if (!this.currentUser) return;
 
@@ -162,6 +173,7 @@ class AppModel {
         }
     }
 
+    // Редагування тексту власного допису
     editPost(postId, newText) {
         if (!this.currentUser) return;
 
@@ -173,6 +185,7 @@ class AppModel {
         this._save('posts', this.posts);
     }
 
+    // Редагування власного коментаря
     editComment(postId, index, newText) {
         if (!this.currentUser) return;
 
@@ -187,6 +200,7 @@ class AppModel {
         this._save('posts', this.posts);
     }
 
+    // Отримання статистики активності (кількість постів, лайків, коментарів)
     getUserStats() {
         if (!this.currentUser) {
             return { posts: 0, likes: 0, comments: 0 };
@@ -211,6 +225,7 @@ class AppModel {
         };
     }
 
+    // Оновлення аватара користувача та його синхронізація 
     updateAvatar(base64) {
         if (!this.currentUser) return;
 

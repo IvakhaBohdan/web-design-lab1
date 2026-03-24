@@ -31,8 +31,8 @@ document.addEventListener('click', (e) => {
     if (e.target.id === 'logout-btn') {
         e.preventDefault();
         handlers.logout();
-    }
-});
+    });
+}
 
         //  REGISTER
         if (this.registerForm) {

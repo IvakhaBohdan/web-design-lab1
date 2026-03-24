@@ -56,7 +56,7 @@ class AppModel {
                 title,
                 body,
                  author: this.currentUser.email,
-                 authorName: this.currentUser.name
+                 authorName: this.currentUser.name,
                 likes: [],
             comments: [] 
             };
@@ -69,10 +69,10 @@ class AppModel {
         const post = this.posts.find(p => p.id === postId);
         if (!post || !this.currentUser) return;
 
-        const index = post.likes.indexOf(this.currentUser.name);
+        const index = post.likes.indexOf(this.currentUser.email);
 
         if (index === -1) {
-            post.likes.push(this.currentUser.name);
+            post.likes.push(this.currentUser.email);
         } else {
             post.likes.splice(index, 1);
         }
@@ -87,7 +87,7 @@ class AppModel {
 
     post.comments.push({
         author: this.currentUser.email,
-        authorName: this.currentUser.name
+        authorName: this.currentUser.name,
         text
     });
      this._save('posts', this.posts);
@@ -98,7 +98,7 @@ deletePost(postId) {
 
     if (!post || !this.currentUser) return;
 
-    if (post.author !== this.currentUser.name) return;
+    if (post.author !== this.currentUser.email) return;
 
     this.posts = this.posts.filter(p => p.id !== postId);
 
@@ -112,8 +112,8 @@ deletePost(postId) {
     const comment = post.comments[index];
 
     if (
-        comment.author === this.currentUser.name ||
-        post.author === this.currentUser.name
+        comment.author === this.currentUser.email ||
+        post.author === this.currentUser.email
     ) {
         post.comments.splice(index, 1);
         this._save('posts', this.posts);
@@ -125,20 +125,20 @@ getUserStats() {
         return { posts: 0, likes: 0, comments: 0 };
     }
 
-    const userName = this.currentUser.name;
+    const email = this.currentUser.email;
 
     // Пости
-    const userPosts = this.posts.filter(p => p.author === userName);
+    const userPosts = this.posts.filter(p => p.author === email);
     const postsCount = userPosts.length;
 
-    // Коментарі (по всіх постах)
+    // Коментарі (всіх постів)
     const commentsCount = this.posts.reduce((sum, p) => {
-        return sum + (p.comments?.filter(c => c.author === userName).length || 0);
+        return sum + (p.comments?.filter(c => c.author === email).length || 0);
     }, 0);
 
-    // Лайки (по всіх постах)
+    // Лайки (всіх постів)
     const likesCount = this.posts.reduce((sum, p) => {
-        return sum + (p.likes?.includes(userName) ? 1 : 0);
+        return sum + (p.likes?.includes(email) ? 1 : 0);
     }, 0);
 
     return {

@@ -63,8 +63,6 @@
     © 2026 Лабораторна робота
 </footer>
 
-<script src="main.js"></script>
-
 <!-- LOGIC -->
 <script>
 document.addEventListener('DOMContentLoaded', () => {
@@ -75,7 +73,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (!nav || !hero) return;
 
-    // 🔐 USER LOGGED IN
+    //  USER LOGGED IN
     if (user) {
 
         nav.innerHTML = `<a href="#" id="logout-btn">Вихід</a>`;
@@ -87,7 +85,6 @@ document.addEventListener('DOMContentLoaded', () => {
             </a>
         `;
 
-        // 🔥 ВАЖЛИВО: додаємо listener ПІСЛЯ innerHTML
         const logoutBtn = document.getElementById('logout-btn');
 
         if (logoutBtn) {
@@ -101,7 +98,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
     } 
-    // 👤 NOT LOGGED IN
     else {
 
         nav.innerHTML = `<a href="login.html">Вхід</a>`;

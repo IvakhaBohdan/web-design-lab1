@@ -6,7 +6,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const user = JSON.parse(localStorage.getItem('currentUser'));
 
-    //  Захист сторінок
     const protectedPages = ['app.html', 'profile.html'];
     const page = window.location.pathname.split('/').pop();
 

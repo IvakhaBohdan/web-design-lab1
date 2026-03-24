@@ -78,7 +78,7 @@ class AppModel {
     if (!post) return;
 
     post.comments.push({
-        author: this.currentUser.name,
+        author: this.currentUser.email,
         text
     });
      this._save('posts', this.posts);

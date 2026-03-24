@@ -92,7 +92,7 @@ class AppModel {
             authorAvatar: this.currentUser.avatar,
             createdAt: Date.now(),
             likes: [],
-            comments: []
+            comments: [],
         };
 
         this.posts.push(post);

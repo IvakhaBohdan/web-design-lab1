@@ -12,20 +12,25 @@ class AppView {
         this.closeModal = document.getElementById('close-modal');
     }
 
-        formatTime(timestamp) {
-            const date = new Date(timestamp);
-        
-            return date.toLocaleString('uk-UA', {
-                day: '2-digit',
-                month: '2-digit',
-                hour: '2-digit',
-                minute: '2-digit'
-            });
-        }
-  
+    formatTime(timestamp) {
+        if (!timestamp) return '';
+        const date = new Date(timestamp);
+
+        return date.toLocaleTimeString('uk-UA', {
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+    }
+
+    formatDate(timestamp) {
+        if (!timestamp) return '';
+        const date = new Date(timestamp);
+
+        return date.toLocaleDateString('uk-UA');
+    }
+
     bindEvents(handlers) {
 
-        // LOGIN
         if (this.loginForm) {
             this.loginForm.addEventListener('submit', e => {
                 e.preventDefault();
@@ -36,7 +41,6 @@ class AppView {
             });
         }
 
-        // LOGOUT
         document.addEventListener('click', e => {
             const btn = e.target.closest('#logout-btn');
             if (btn) {
@@ -45,7 +49,6 @@ class AppView {
             }
         });
 
-        // REGISTER
         if (this.registerForm) {
             this.registerForm.addEventListener('submit', e => {
                 e.preventDefault();
@@ -59,7 +62,6 @@ class AppView {
             });
         }
 
-        // CREATE POST
         if (this.postForm) {
             this.postForm.addEventListener('submit', e => {
                 e.preventDefault();
@@ -70,11 +72,9 @@ class AppView {
             });
         }
 
-        // SHOW / HIDE POST FORM
         document.getElementById('show-form-btn')?.addEventListener('click', handlers.togglePostForm);
         document.getElementById('cancel-post-btn')?.addEventListener('click', handlers.hidePostForm);
 
-        // POSTS
         if (this.postsContainer) {
             this.postsContainer.addEventListener('click', e => {
 
@@ -123,7 +123,6 @@ class AppView {
                 }
             });
 
-            // ADD COMMENT
             this.postsContainer.addEventListener('submit', e => {
                 if (e.target.classList.contains('comment-form')) {
                     e.preventDefault();
@@ -139,7 +138,6 @@ class AppView {
             });
         }
 
-        // PROFILE EDIT
         if (this.editBtn) {
             this.editBtn.onclick = () => this.modal.classList.remove('hidden');
             this.closeModal.onclick = () => this.modal.classList.add('hidden');
@@ -157,7 +155,6 @@ class AppView {
             };
         }
 
-        // AVATAR
         const avatarInput = document.getElementById('avatar-upload');
         if (avatarInput) {
             avatarInput.addEventListener('change', e => {
@@ -173,7 +170,6 @@ class AppView {
         }
     }
 
-    // POSTS RENDER
     displayPosts(posts, currentUser) {
         if (!this.postsContainer) return;
 
@@ -190,7 +186,8 @@ class AppView {
                     <img src="${post.authorAvatar || `https://ui-avatars.com/api/?name=${post.authorName}`}" 
                          class="w-8 h-8 rounded-full">
                     <span class="text-sm text-gray-500">
-                        ✍ ${post.authorName} · ${this.formatTime(post.createdAt)}
+                        ✍ ${post.authorName} · ${this.formatDate(post.createdAt)} ${this.formatTime(post.createdAt)}
+                        ${post.updatedAt ? ' (ред. ' + this.formatTime(post.updatedAt) + ')' : ''}
                     </span>
                 </div>
 
@@ -213,9 +210,15 @@ class AppView {
                             <div class="flex items-center gap-2">
                                 <img src="${c.authorAvatar || `https://ui-avatars.com/api/?name=${c.authorName}`}" 
                                      class="w-6 h-6 rounded-full">
-                                <span class="text-sm text-gray-500">
-                                    ✍ ${post.authorName} · ${this.formatTime(post.createdAt)}
-                                </span>
+
+                                <div>
+                                    <span><b>${c.authorName}:</b> ${c.text}</span>
+
+                                    <div class="text-xs text-gray-400">
+                                        ${this.formatDate(c.createdAt)} ${this.formatTime(c.createdAt)}
+                                        ${c.updatedAt ? ' (ред. ' + this.formatTime(c.updatedAt) + ')' : ''}
+                                    </div>
+                                </div>
                             </div>
 
                             <div>

@@ -85,7 +85,15 @@ class AppController {
              updateAvatar: (base64) => {
                 this.model.updateAvatar(base64);
                 this.updateView();
-            }            
+            },     
+
+            editPost: (id, text) => {
+                this.model.editPost(id, text);
+            },
+            
+            editComment: (postId, index, text) => {
+                this.model.editComment(postId, index, text);
+            }
      });
    
     }

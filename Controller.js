@@ -3,7 +3,6 @@ class AppController {
         this.model = model;
         this.view = view;
 
-        //  підписка на зміни даних
         this.model.bindDataChanged(() => this.updateView());
 
         // перший рендер
@@ -67,7 +66,7 @@ class AppController {
             //  ДОДАТИ КОМЕНТАР
             addComment: (postId, text) => {
                 this.model.addComment(postId, text);
-                this.updateView(); // одразу оновлюємо
+                this.updateView(); 
             },
 
             //  ВИДАЛИТИ КОМЕНТАР
@@ -81,16 +80,16 @@ class AppController {
                 this.model.updateUser(data);
                 this.updateView();
             },
-
+             //  ОНОВИТИ АВАТАР
              updateAvatar: (base64) => {
                 this.model.updateAvatar(base64);
                 this.updateView();
             },     
-
+            // ЗМІНИТИ ПОСТ
             editPost: (id, text) => {
                 this.model.editPost(id, text);
             },
-            
+            // ЗМІНИТИ КОМЕНТАР
             editComment: (postId, index, text) => {
                 this.model.editComment(postId, index, text);
             }

@@ -296,4 +296,14 @@ class AppView {
     togglePostForm() {
         document.getElementById('post-form-container')?.classList.toggle('hidden');
     }
+
+    showAlert(message) {
+        alert(message);
+    }
+
+    showPrompt(message, defaultValue = '') {
+        return prompt(message, defaultValue);
+    }
+
+    
 }

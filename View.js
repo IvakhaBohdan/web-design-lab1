@@ -12,6 +12,17 @@ class AppView {
         this.closeModal = document.getElementById('close-modal');
     }
 
+        formatTime(timestamp) {
+            const date = new Date(timestamp);
+        
+            return date.toLocaleString('uk-UA', {
+                day: '2-digit',
+                month: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+  
     bindEvents(handlers) {
 
         // LOGIN
@@ -178,7 +189,9 @@ class AppView {
                 <div class="flex items-center gap-2">
                     <img src="${post.authorAvatar || `https://ui-avatars.com/api/?name=${post.authorName}`}" 
                          class="w-8 h-8 rounded-full">
-                    <span class="text-sm text-gray-500">✍ ${post.authorName}</span>
+                    <span class="text-sm text-gray-500">
+                        ✍ ${post.authorName} · ${this.formatTime(post.createdAt)}
+                    </span>
                 </div>
 
                 <h2 class="text-xl font-bold">${post.title}</h2>
@@ -200,7 +213,9 @@ class AppView {
                             <div class="flex items-center gap-2">
                                 <img src="${c.authorAvatar || `https://ui-avatars.com/api/?name=${c.authorName}`}" 
                                      class="w-6 h-6 rounded-full">
-                                <span><b>${c.authorName}:</b> ${c.text}</span>
+                                <span class="text-sm text-gray-500">
+                                    ✍ ${post.authorName} · ${this.formatTime(post.createdAt)}
+                                </span>
                             </div>
 
                             <div>

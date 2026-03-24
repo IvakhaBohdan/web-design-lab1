@@ -275,6 +275,14 @@ class AppView {
 
         this.profileName.textContent = user.name;
 
+                // Оновлення статусу в профілі
+            const bioElement = document.getElementById('profile-bio');
+            if (bioElement) {
+                bioElement.textContent = user.bio || 'Додайте статус...';
+            }
+            const editBioInput = document.getElementById('edit-bio');
+            if (editBioInput) editBioInput.value = user.bio || '';
+
         document.getElementById('profile-table-name').textContent = user.name;
         document.getElementById('profile-table-email').textContent = user.email;
         document.getElementById('profile-table-gender').textContent = user.gender || '-';

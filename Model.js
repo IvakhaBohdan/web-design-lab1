@@ -107,4 +107,31 @@ deletePost(postId) {
         this._save('posts', this.posts);
     }
 }
+
+getUserStats() {
+    if (!this.currentUser) return { posts: 0, likes: 0, comments: 0 };
+
+    const userPosts = this.posts.filter(
+        p => p.author === this.currentUser.name
+    );
+
+    const postsCount = userPosts.length;
+
+    const likesCount = userPosts.reduce(
+        (sum, p) => sum + (p.likes ? p.likes.length : 0),
+        0
+    );
+
+    const commentsCount = userPosts.reduce(
+        (sum, p) => sum + (p.comments ? p.comments.length : 0),
+        0
+    );
+
+    return {
+        posts: postsCount,
+        likes: likesCount,
+        comments: commentsCount
+    };
+}
+    
 }

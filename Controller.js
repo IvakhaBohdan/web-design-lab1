@@ -9,10 +9,10 @@ class AppController {
         // перший рендер
         this.updateView();
 
-        // 🎯 обробники подій
+        //  обробники подій
         this.view.bindEvents({
 
-            // 📝 REGISTER
+            //  REGISTER
             register: (userData) => {
                 const res = this.model.registerUser(userData);
 
@@ -24,7 +24,7 @@ class AppController {
                 }
             },
 
-            // 🔐 LOGIN
+            //  LOGIN
             login: (email, password) => {
                 if (this.model.loginUser(email, password)) {
                     window.location.href = 'app.html';
@@ -33,7 +33,12 @@ class AppController {
                 }
             },
 
-            // 📝 ДОДАТИ ПОСТ
+            logout: () => {
+                this.model.logoutUser();
+                window.location.href = 'login.html';
+            },
+
+            //  ДОДАТИ ПОСТ
             addPost: (title, body) => {
             this.model.addPost(title, body);
                 setTimeout(() => {
@@ -41,29 +46,29 @@ class AppController {
                 }, 0);
                 },
 
-            // ❌ ВИДАЛИТИ ПОСТ
+            //  ВИДАЛИТИ ПОСТ
             deletePost: (id) => {
                 this.model.deletePost(id);
             },
 
-            // ❤️ ЛАЙК
+            //  ЛАЙК
             likePost: (id) => {
                 this.model.toggleLike(id);
             },
 
-            // 💬 ДОДАТИ КОМЕНТАР
+            //  ДОДАТИ КОМЕНТАР
             addComment: (postId, text) => {
                 this.model.addComment(postId, text);
                 this.updateView(); // одразу оновлюємо
             },
 
-            // 🗑 ВИДАЛИТИ КОМЕНТАР
+            //  ВИДАЛИТИ КОМЕНТАР
             deleteComment: (postId, index) => {
                 this.model.deleteComment(postId, index);
                 this.updateView();
             },
 
-            // 👤 ОНОВИТИ ПРОФІЛЬ
+            //  ОНОВИТИ ПРОФІЛЬ
             updateProfile: (data) => {
                 this.model.updateUser(data);
                 this.updateView();
@@ -71,18 +76,18 @@ class AppController {
         });
     }
 
-    // 🔄 ОНОВЛЕННЯ UI
+    //  ОНОВЛЕННЯ UI
     updateView() {
         const user = this.model.currentUser;
 
         if (!user) return;
 
-        // 📰 Пости
+        //  Пости
         if (this.view.postsContainer) {
             this.view.displayPosts(this.model.posts, user.name);
         }
 
-        // 👤 Профіль
+        //  Профіль
         if (this.view.profileName) {
             const count = this.model.posts.filter(
                 p => p.author === user.name

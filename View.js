@@ -161,7 +161,6 @@ class AppView {
         }
     }
 
-    // ✅ ТЕПЕР БЕЗ currentUser
     displayPosts(posts) {
         if (!this.postsContainer) return;
 

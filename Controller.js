@@ -33,6 +33,11 @@ class AppController {
                 window.location.href = 'login.html';
             },
 
+            initIndex() {
+                const user = this.model.currentUser;
+                this.view.renderIndex(user);
+            },
+
             addPost: (title, body) => {
                 this.model.addPost(title, body);
                 this.view.hidePostForm();

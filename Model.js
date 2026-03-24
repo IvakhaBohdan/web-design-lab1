@@ -78,7 +78,7 @@ class AppModel {
     if (!post) return;
 
     post.comments.push({
-        author: this.currentUser.email,
+        author: this.currentUser.name,
         text
     });
      this._save('posts', this.posts);
@@ -112,23 +112,25 @@ deletePost(postId) {
 }
 
 getUserStats() {
-    if (!this.currentUser) return { posts: 0, likes: 0, comments: 0 };
+    if (!this.currentUser) {
+        return { posts: 0, likes: 0, comments: 0 };
+    }
 
-    // Пости користувача
-const userPosts = posts.filter(p => p.author === user.name);
-document.getElementById('profile-posts-count').textContent = userPosts.length;
+    const userName = this.currentUser.name;
 
-// Коментарі користувача (всіх постів)
-const commentsCount = posts.reduce((sum, p) => {
-    return sum + (p.comments?.filter(c => c.author === user.name).length || 0);
-}, 0);
-document.getElementById('profile-comments-count').textContent = commentsCount;
+    // Пости
+    const userPosts = this.posts.filter(p => p.author === userName);
+    const postsCount = userPosts.length;
 
-// Лайки користувача (всіх постів)
-const likesCount = posts.reduce((sum, p) => {
-    return sum + (p.likes?.includes(user.email) ? 1 : 0);
-}, 0);
-document.getElementById('profile-likes-count').textContent = likesCount;;
+    // Коментарі (по всіх постах)
+    const commentsCount = this.posts.reduce((sum, p) => {
+        return sum + (p.comments?.filter(c => c.author === userName).length || 0);
+    }, 0);
+
+    // Лайки (по всіх постах)
+    const likesCount = this.posts.reduce((sum, p) => {
+        return sum + (p.likes?.includes(userName) ? 1 : 0);
+    }, 0);
 
     return {
         posts: postsCount,

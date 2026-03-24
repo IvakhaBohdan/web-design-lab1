@@ -19,6 +19,7 @@ class AppModel {
         if (this.users.find(u => u.email === userData.email)) return { success: false };
         this.users.push({
             ...userData,
+            avatar: null,
             createdAt: Date.now()
             });
         this._save('users', this.users);
@@ -57,6 +58,7 @@ class AppModel {
                 body,
                  author: this.currentUser.email,
                  authorName: this.currentUser.name,
+                authorAvatar: this.currentUser.avatar,
                 likes: [],
             comments: [] 
             };
@@ -88,6 +90,7 @@ class AppModel {
     post.comments.push({
         author: this.currentUser.email,
         authorName: this.currentUser.name,
+        authorAvatar: this.currentUser.avatar,
         text
     });
      this._save('posts', this.posts);
@@ -146,6 +149,37 @@ getUserStats() {
         likes: likesCount,
         comments: commentsCount
     };
+}
+
+    updateAvatar(base64) {
+    if (!this.currentUser) return;
+
+    this.currentUser.avatar = base64;
+
+    this.users = this.users.map(u =>
+        u.email === this.currentUser.email ? this.currentUser : u
+    );
+
+    //  оновлюємо всі пости і коментарі
+    this.posts = this.posts.map(post => {
+
+        if (post.author === this.currentUser.email) {
+            post.authorAvatar = base64;
+        }
+
+        post.comments = post.comments.map(c => {
+            if (c.author === this.currentUser.email) {
+                return { ...c, authorAvatar: base64 };
+            }
+            return c;
+        });
+
+        return post;
+    });
+
+    this._save('users', this.users);
+    this._save('posts', this.posts);
+    this._save('currentUser', this.currentUser);
 }
     
 }

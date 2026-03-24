@@ -6,19 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const user = JSON.parse(localStorage.getItem('currentUser'));
 
-    const logoutBtn = document.getElementById('logout-btn');
-
-    if (logoutBtn) {
-        logoutBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-
-            localStorage.removeItem('currentUser');
-
-            window.location.href = 'login.html';
-        });
-    }
-
-    // 🔒 Захист сторінок
+    //  Захист сторінок
     const protectedPages = ['app.html', 'profile.html'];
     const page = window.location.pathname.split('/').pop();
 

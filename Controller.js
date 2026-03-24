@@ -80,10 +80,11 @@ class AppController {
             updateProfile: (data) => {
                 this.model.updateUser(data);
                 this.updateView();
-            }
+            },
 
          updateAvatar: (base64) => {
         this.model.updateAvatar(base64);
+        this.updateView();
         }            
      });
    

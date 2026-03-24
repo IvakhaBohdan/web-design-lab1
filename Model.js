@@ -36,6 +36,7 @@ class AppModel {
     logoutUser() {
     this.currentUser = null;
     localStorage.removeItem('currentUser');
+    this.onDataChanged();
 }
 
     updateUser(newData) {

@@ -209,15 +209,23 @@ class AppView {
     }
 
     //  PROFILE
-    displayUserProfile(user, count) {
-        if (!this.profileName || !user) return;
+    displayUserProfile(user, stats) {
+    if (!this.profileName || !user) return;
 
-        this.profileName.textContent = user.name;
+    this.profileName.textContent = user.name;
 
-        document.getElementById('profile-table-name').textContent = user.name;
-        document.getElementById('profile-table-email').textContent = user.email;
-        document.getElementById('profile-posts-count').textContent = count;
-    }
+    document.getElementById('profile-table-name').textContent = user.name;
+    document.getElementById('profile-table-email').textContent = user.email;
+
+    document.getElementById('profile-posts-count').textContent = stats.posts;
+
+    // 🆕 Додай ці поля в HTML!
+    const likesEl = document.getElementById('profile-likes-count');
+    const commentsEl = document.getElementById('profile-comments-count');
+
+    if (likesEl) likesEl.textContent = stats.likes;
+    if (commentsEl) commentsEl.textContent = stats.comments;
+}
 
     //  HIDE FORM
     hidePostForm() {

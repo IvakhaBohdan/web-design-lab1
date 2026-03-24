@@ -29,6 +29,36 @@ class AppView {
         return date.toLocaleDateString('uk-UA');
     }
 
+        renderIndex(user) {
+            const nav = document.getElementById('nav-auth');
+            const hero = document.getElementById('hero-action');
+        
+            if (!nav || !hero) return;
+        
+            if (user) {
+                nav.innerHTML = `<a href="#" id="logout-btn">Вихід</a>`;
+        
+                hero.innerHTML = `
+                    <a href="app.html"
+                       class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-full shadow-lg">
+                        Перейти до блогу
+                    </a>
+                `;
+            } else {
+                nav.innerHTML = `<a href="login.html">Вхід</a>`;
+        
+                hero.innerHTML = `
+                    <a href="register.html"
+                       class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-8 rounded-full shadow-lg">
+                        Приєднатися
+                    </a>
+                `;
+            }
+        }
+        
+
+
+    
     bindEvents(handlers) {
 
         if (this.loginForm) {

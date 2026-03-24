@@ -5,13 +5,10 @@ class AppController {
 
         this.model.bindDataChanged(() => this.updateView());
 
-        // перший рендер
         this.updateView();
 
-        //  обробники подій
         this.view.bindEvents({
 
-            //  REGISTER
             register: (userData) => {
                 const res = this.model.registerUser(userData);
 
@@ -23,8 +20,7 @@ class AppController {
                 }
             },
 
-            //  LOGIN
-            login: (email, password) => {
+            login: ({ email, password }) => {
                 if (this.model.loginUser(email, password)) {
                     window.location.href = 'app.html';
                 } else {
@@ -37,59 +33,47 @@ class AppController {
                 window.location.href = 'login.html';
             },
 
-            //  ДОДАТИ ПОСТ
             addPost: (title, body) => {
-            this.model.addPost(title, body);
-                setTimeout(() => {
+                this.model.addPost(title, body);
                 this.view.hidePostForm();
-                }, 0);
-                },
+            },
 
             togglePostForm: () => {
                 this.view.togglePostForm();
-                },
+            },
 
             hidePostForm: () => {
                 this.view.hidePostForm();
             },
 
-            //  ВИДАЛИТИ ПОСТ
             deletePost: (id) => {
                 this.model.deletePost(id);
             },
 
-            //  ЛАЙК
             likePost: (id) => {
                 this.model.toggleLike(id);
             },
 
-            //  ДОДАТИ КОМЕНТАР
             addComment: (postId, text) => {
                 this.model.addComment(postId, text);
-                this.updateView(); 
             },
 
-            //  ВИДАЛИТИ КОМЕНТАР
             deleteComment: (postId, index) => {
                 this.model.deleteComment(postId, index);
-                this.updateView();
             },
 
-            //  ОНОВИТИ ПРОФІЛЬ
             updateProfile: (data) => {
                 this.model.updateUser(data);
-                this.updateView();
             },
-             //  ОНОВИТИ АВАТАР
-             updateAvatar: (base64) => {
+
+            updateAvatar: (base64) => {
                 this.model.updateAvatar(base64);
-                this.updateView();
-            },     
-            // ЗМІНИТИ ПОСТ
+            },
+
             editPost: (id, text) => {
                 this.model.editPost(id, text);
             },
-            // ЗМІНИТИ КОМЕНТАР
+
             editComment: (postId, index, text) => {
                 this.model.editComment(postId, index, text);
             },
@@ -98,8 +82,8 @@ class AppController {
                 const newText = prompt('Новий текст поста:');
                 if (newText) {
                     this.model.editPost(id, newText);
-                  }
-                },
+                }
+            },
 
             startEditComment: (postId, index) => {
                 const newText = prompt('Новий коментар:');
@@ -107,26 +91,44 @@ class AppController {
                     this.model.editComment(postId, index, newText);
                 }
             }
-     });
-   
+        });
     }
 
-    //  ОНОВЛЕННЯ UI
     updateView() {
-    const user = this.model.currentUser;
+        const user = this.model.currentUser;
 
-    if (!user) return;
+        if (!user) return;
 
-    //  Пости
-    if (this.view.postsContainer) {
-        this.view.displayPosts(this.model.posts, user);
+        const postsForView = this.model.posts.map(post => {
+
+            const isLiked = post.likes?.includes(user.email);
+
+            return {
+                ...post,
+
+                likesCount: post.likes?.length || 0,
+                isLiked: isLiked,
+
+                canEdit: post.author === user.email,
+                canDelete: post.author === user.email,
+
+                comments: (post.comments || []).map(c => ({
+                    ...c,
+                    canEdit: c.author === user.email,
+                    canDelete:
+                        c.author === user.email ||
+                        post.author === user.email
+                }))
+            };
+        });
+
+        if (this.view.postsContainer) {
+            this.view.displayPosts(postsForView);
+        }
+
+        if (this.view.profileName) {
+            const stats = this.model.getUserStats();
+            this.view.displayUserProfile(user, stats);
+        }
     }
-
-    //  Профіль
-    if (this.view.profileName) {
-
-        const stats = this.model.getUserStats();
-        this.view.displayUserProfile(user, stats);
-    }
- }
 }

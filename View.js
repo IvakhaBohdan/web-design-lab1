@@ -27,12 +27,14 @@ class AppView {
         }
 
         //  LOGOUT 
-document.addEventListener('click', (e) => {
-    if (e.target.id === 'logout-btn') {
-        e.preventDefault();
-        handlers.logout();
-    });
-}
+        document.addEventListener('click', (e) => {
+            const btn = e.target.closest('#logout-btn');
+
+                if (btn) {
+                    e.preventDefault();
+                    handlers.logout();
+                }
+            });
 
         //  REGISTER
         if (this.registerForm) {

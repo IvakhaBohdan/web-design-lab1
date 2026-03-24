@@ -74,7 +74,7 @@ class AppView {
         document.getElementById('show-form-btn')?.addEventListener('click', handlers.togglePostForm);
         document.getElementById('cancel-post-btn')?.addEventListener('click', handlers.hidePostForm);
 
-        // POSTS (ОДИН listener — це важливо)
+        // POSTS
         if (this.postsContainer) {
             this.postsContainer.addEventListener('click', e => {
 

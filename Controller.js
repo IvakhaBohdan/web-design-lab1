@@ -99,8 +99,7 @@ class AppController {
     if (this.view.profileName) {
 
         const stats = this.model.getUserStats();
-
-        this.view.displayUserProfile(user, this.model.posts);
+        this.view.displayUserProfile(user, stats);
     }
  }
 }

@@ -181,7 +181,8 @@ class AppView {
                     <span class="text-sm text-gray-500">✍ ${post.authorName}</span>
                 </div>
 
-                <p class="mt-3">${post.body}</p>
+                <h2 class="text-xl font-bold">${post.title}</h2>
+                <p class="text-gray-700 mt-2">${post.body}</p>
 
                 <button class="like-btn mt-3" data-id="${post.id}">
                     ${isLiked ? '❤️' : '🤍'} ${likes.length}

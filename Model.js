@@ -114,21 +114,21 @@ deletePost(postId) {
 getUserStats() {
     if (!this.currentUser) return { posts: 0, likes: 0, comments: 0 };
 
-    const userPosts = this.posts.filter(
-        p => p.author === this.currentUser.name
-    );
+    // Пости користувача
+const userPosts = posts.filter(p => p.author === user.name);
+document.getElementById('profile-posts-count').textContent = userPosts.length;
 
-    const postsCount = userPosts.length;
+// Коментарі користувача (всіх постів)
+const commentsCount = posts.reduce((sum, p) => {
+    return sum + (p.comments?.filter(c => c.author === user.name).length || 0);
+}, 0);
+document.getElementById('profile-comments-count').textContent = commentsCount;
 
-    const likesCount = userPosts.reduce(
-        (sum, p) => sum + (p.likes ? p.likes.length : 0),
-        0
-    );
-
-    const commentsCount = userPosts.reduce(
-        (sum, p) => sum + (p.comments ? p.comments.length : 0),
-        0
-    );
+// Лайки користувача (всіх постів)
+const likesCount = posts.reduce((sum, p) => {
+    return sum + (p.likes?.includes(user.email) ? 1 : 0);
+}, 0);
+document.getElementById('profile-likes-count').textContent = likesCount;;
 
     return {
         posts: postsCount,

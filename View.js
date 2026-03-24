@@ -169,6 +169,7 @@ class AppView {
 
                 handlers.updateProfile({
                     name: document.getElementById('edit-name').value,
+                    bio: document.getElementById('edit-bio').value,
                     gender: document.getElementById('edit-gender').value,
                     dob: document.getElementById('edit-dob').value
                 });

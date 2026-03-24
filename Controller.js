@@ -92,7 +92,7 @@ class AppController {
 
     //  Пости
     if (this.view.postsContainer) {
-        this.view.displayPosts(this.model.posts, user.name);
+        this.view.displayPosts(this.model.posts, user);
     }
 
     //  Профіль

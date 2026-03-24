@@ -169,6 +169,7 @@ class AppModel {
         if (!post || post.author !== this.currentUser.email) return;
 
         post.body = newText;
+        post.updatedAt = Date.now();
         this._save('posts', this.posts);
     }
 
@@ -182,6 +183,7 @@ class AppModel {
         if (!comment || comment.author !== this.currentUser.email) return;
 
         comment.text = newText;
+        comment.updatedAt = Date.now();
         this._save('posts', this.posts);
     }
 

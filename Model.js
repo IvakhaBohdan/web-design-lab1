@@ -33,6 +33,11 @@ class AppModel {
         return true;
     }
 
+    logoutUser() {
+    this.currentUser = null;
+    localStorage.removeItem('currentUser');
+}
+
     updateUser(newData) {
         if (!this.currentUser) return;
         this.users = this.users.map(u => u.email === this.currentUser.email ? { ...u, ...newData } : u);

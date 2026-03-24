@@ -27,14 +27,12 @@ class AppView {
         }
 
         //  LOGOUT 
-        const logoutBtn = document.getElementById('logout-btn');
-
-        if (logoutBtn) {
-            logoutBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            handlers.logout();
-            });
-        }
+document.addEventListener('click', (e) => {
+    if (e.target.id === 'logout-btn') {
+        e.preventDefault();
+        handlers.logout();
+    }
+});}
 
         //  REGISTER
         if (this.registerForm) {
@@ -64,6 +62,9 @@ class AppView {
                 );
             });
         }
+
+        const showBtn = document.getElementById('show-form-btn');
+        const cancelBtn = document.getElementById('cancel-post-btn');
 
         if (showBtn) {
             showBtn.addEventListener('click', () => {
@@ -229,4 +230,9 @@ class AppView {
             formContainer.classList.add('hidden');
         }
     }
+
+    togglePostForm() {
+    const form = document.getElementById('post-form-container');
+    if (form) form.classList.toggle('hidden');
+}
 }

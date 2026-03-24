@@ -16,7 +16,7 @@ class AppController {
                     this.model.loginUser(userData.email, userData.password);
                     window.location.href = 'profile.html';
                 } else {
-                    alert('Користувач вже існує');
+                    this.view.showAlert('Користувач вже існує');
                 }
             },
 
@@ -24,7 +24,7 @@ class AppController {
                 if (this.model.loginUser(email, password)) {
                     window.location.href = 'app.html';
                 } else {
-                    alert('Невірний email або пароль');
+                    this.view.showAlert('Невірний email або пароль');
                 }
             },
 
@@ -84,14 +84,14 @@ class AppController {
             },
 
             startEditPost: (id) => {
-                const newText = prompt('Новий текст поста:');
+                const newText = this.view.showPrompt('Новий текст поста:');
                 if (newText) {
                     this.model.editPost(id, newText);
                 }
             },
 
             startEditComment: (postId, index) => {
-                const newText = prompt('Новий коментар:');
+                const newText = this.view.showPrompt('Новий коментар:');
                 if (newText) {
                     this.model.editComment(postId, index, newText);
                 }

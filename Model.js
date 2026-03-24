@@ -157,7 +157,9 @@ getUserStats() {
     this.currentUser.avatar = base64;
 
     this.users = this.users.map(u =>
-        u.email === this.currentUser.email ? this.currentUser : u
+        u.email === this.currentUser.email
+            ? { ...u, avatar: base64 }
+            : u
     );
 
     //  оновлюємо всі пости і коментарі

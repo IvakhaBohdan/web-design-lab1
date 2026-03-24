@@ -65,6 +65,18 @@ class AppView {
             });
         }
 
+        if (showBtn) {
+            showBtn.addEventListener('click', () => {
+            handlers.togglePostForm();
+        });
+        }
+
+        if (cancelBtn) {
+            cancelBtn.addEventListener('click', () => {
+            handlers.hidePostForm();
+        });
+        }
+
         //  POSTS + COMMENTS
         if (this.postsContainer) {
 

@@ -34,10 +34,10 @@ class AppView {
         if (this.loginForm) {
             this.loginForm.addEventListener('submit', e => {
                 e.preventDefault();
-                handlers.login(
-                    document.getElementById('email').value,
-                    document.getElementById('password').value
-                );
+                handlers.login({
+                    email: document.getElementById('email').value,
+                    password: document.getElementById('password').value
+                });
             });
         }
 
@@ -103,7 +103,7 @@ class AppView {
                 }
 
                 if (editPostBtn) {
-                     handlers.startEditPost(Number(editPostBtn.dataset.id));
+                    handlers.startEditPost(Number(editPostBtn.dataset.id));
                 }
 
                 if (editCommentBtn) {
@@ -161,14 +161,11 @@ class AppView {
         }
     }
 
-    displayPosts(posts, currentUser) {
+    // ✅ ТЕПЕР БЕЗ currentUser
+    displayPosts(posts) {
         if (!this.postsContainer) return;
 
         this.postsContainer.innerHTML = posts.map(post => {
-
-            const likes = post.likes || [];
-            const comments = post.comments || [];
-            const isLiked = likes.includes(currentUser.email);
 
             return `
             <article class="bg-white p-6 rounded-lg shadow-sm border mb-6">
@@ -186,16 +183,19 @@ class AppView {
                 <p class="text-gray-700 mt-2">${post.body}</p>
 
                 <button class="like-btn mt-3" data-id="${post.id}">
-                    ${isLiked ? '❤️' : '🤍'} ${likes.length}
+                    ${post.isLiked ? '❤️' : '🤍'} ${post.likesCount}
                 </button>
 
-                ${post.author === currentUser.email ? `
+                ${post.canDelete ? `
                     <button class="delete-btn ml-3 text-red-500" data-id="${post.id}">Видалити</button>
+                ` : ''}
+
+                ${post.canEdit ? `
                     <button class="edit-post ml-2 text-blue-500" data-id="${post.id}">Редагувати</button>
                 ` : ''}
 
                 <div class="mt-4">
-                    ${comments.map((c, i) => `
+                    ${post.comments.map((c, i) => `
                         <div class="flex justify-between items-center mt-2 border-t pt-2">
 
                             <div class="flex items-center gap-2">
@@ -213,12 +213,12 @@ class AppView {
                             </div>
 
                             <div>
-                                ${c.author === currentUser.email ? `
+                                ${c.canEdit ? `
                                     <button class="edit-comment text-blue-500 text-xs mr-2"
                                             data-post="${post.id}" data-index="${i}">✏</button>
                                 ` : ''}
 
-                                ${(c.author === currentUser.email || post.author === currentUser.email) ? `
+                                ${c.canDelete ? `
                                     <button class="delete-comment text-red-500 text-xs"
                                             data-post="${post.id}" data-index="${i}">✖</button>
                                 ` : ''}

@@ -73,23 +73,5 @@
     <script src="Controller.js"></script>
     <script src="main.js"></script>
 
-    <script>
-        const showBtn = document.getElementById('show-form-btn');
-        const formContainer = document.getElementById('post-form-container');
-        const cancelBtn = document.getElementById('cancel-post-btn');
-
-        if (showBtn && formContainer) {
-            showBtn.addEventListener('click', () => {
-                formContainer.classList.toggle('hidden');
-            });
-        }
-        
-        if (cancelBtn) {
-            cancelBtn.addEventListener('click', () => {
-                formContainer.classList.add('hidden');
-            });
-        }
-    </script>
-
 </body>
 </html>

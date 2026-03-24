@@ -192,6 +192,23 @@ if (editCommentBtn) {
             });
         }
 
+                const avatarInput = document.getElementById('avatar-upload');
+                
+                if (avatarInput) {
+                    avatarInput.addEventListener('change', e => {
+                        const file = e.target.files[0];
+                
+                        if (!file) return;
+                
+                        const reader = new FileReader();
+                
+                        reader.onload = () => {
+                            handlers.updateAvatar(reader.result);
+                        };
+                
+                        reader.readAsDataURL(file);
+                    });
+                }
         
     }
 

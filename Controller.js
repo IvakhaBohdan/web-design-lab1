@@ -46,6 +46,14 @@ class AppController {
                 }, 0);
                 },
 
+            togglePostForm: () => {
+                this.view.togglePostForm();
+                },
+
+            hidePostForm: () => {
+                this.view.hidePostForm();
+            }
+
             //  ВИДАЛИТИ ПОСТ
             deletePost: (id) => {
                 this.model.deletePost(id);

@@ -63,54 +63,5 @@
     © 2026 Лабораторна робота
 </footer>
 
-<!-- LOGIC -->
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-    const user = JSON.parse(localStorage.getItem('currentUser'));
-
-    const nav = document.getElementById('nav-auth');
-    const hero = document.getElementById('hero-action');
-
-    if (!nav || !hero) return;
-
-    //  USER LOGGED IN
-    if (user) {
-
-        nav.innerHTML = `<a href="#" id="logout-btn">Вихід</a>`;
-
-        hero.innerHTML = `
-            <a href="app.html"
-               class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-full shadow-lg transition">
-                Перейти до блогу
-            </a>
-        `;
-
-        const logoutBtn = document.getElementById('logout-btn');
-
-        if (logoutBtn) {
-            logoutBtn.addEventListener('click', (e) => {
-                e.preventDefault();
-
-                localStorage.removeItem('currentUser');
-
-                window.location.href = 'login.html';
-            });
-        }
-
-    } 
-    else {
-
-        nav.innerHTML = `<a href="login.html">Вхід</a>`;
-
-        hero.innerHTML = `
-            <a href="register.html"
-               class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-8 rounded-full shadow-lg transition">
-                Приєднатися
-            </a>
-        `;
-    }
-});
-</script>
-
 </body>
 </html>

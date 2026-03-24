@@ -67,8 +67,15 @@ class AppModel {
     toggleLike(postId) {
         const post = this.posts.find(p => p.id === postId);
         if (!post || !this.currentUser) return;
-        const index = post.likes.indexOf(this.currentUser.email);
-        index === -1 ? post.likes.push(this.currentUser.email) : post.likes.splice(index, 1);
+
+        const index = post.likes.indexOf(this.currentUser.name);
+
+        if (index === -1) {
+            post.likes.push(this.currentUser.name);
+        } else {
+            post.likes.splice(index, 1);
+        }
+
         this._save('posts', this.posts);
     }
 

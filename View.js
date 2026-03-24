@@ -14,7 +14,7 @@ class AppView {
 
     bindEvents(handlers) {
 
-        // 🔐 LOGIN
+        //  LOGIN
         if (this.loginForm) {
             this.loginForm.addEventListener('submit', e => {
                 e.preventDefault();
@@ -26,7 +26,17 @@ class AppView {
             });
         }
 
-        // 📝 REGISTER
+        //  LOGOUT 
+        const logoutBtn = document.getElementById('logout-btn');
+
+        if (logoutBtn) {
+            logoutBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            handlers.logout();
+            });
+        }
+
+        //  REGISTER
         if (this.registerForm) {
             this.registerForm.addEventListener('submit', e => {
                 e.preventDefault();
@@ -41,7 +51,9 @@ class AppView {
             });
         }
 
-        // 📝 CREATE POST
+        
+
+        //  CREATE POST
         if (this.postForm) {
             this.postForm.addEventListener('submit', e => {
                 e.preventDefault();
@@ -53,7 +65,7 @@ class AppView {
             });
         }
 
-        // 💬 POSTS + COMMENTS
+        //  POSTS + COMMENTS
         if (this.postsContainer) {
 
             this.postsContainer.addEventListener('click', e => {
@@ -62,19 +74,19 @@ class AppView {
                 const likeBtn = e.target.closest('.like-btn');
                 const deleteCommentBtn = e.target.closest('.delete-comment');
 
-                // ❌ DELETE POST
+                //  DELETE POST
                 if (deleteBtn) {
                     handlers.deletePost(Number(deleteBtn.dataset.id));
                     return;
                 }
 
-                // ❤️ LIKE
+                //  LIKE
                 if (likeBtn) {
                     handlers.likePost(Number(likeBtn.dataset.id));
                     return;
                 }
 
-                // 🗑 DELETE COMMENT
+                //  DELETE COMMENT
                 if (deleteCommentBtn) {
                     handlers.deleteComment(
                         Number(deleteCommentBtn.dataset.post),
@@ -84,7 +96,7 @@ class AppView {
                 }
             });
 
-            // 💬 ADD COMMENT
+            //  ADD COMMENT
             this.postsContainer.addEventListener('submit', e => {
                 if (e.target.classList.contains('comment-form')) {
                     e.preventDefault();
@@ -100,7 +112,7 @@ class AppView {
             });
         }
 
-        // 👤 PROFILE EDIT
+        //  PROFILE EDIT
         if (this.editBtn) {
             this.editBtn.onclick = () => this.modal.classList.remove('hidden');
             this.closeModal.onclick = () => this.modal.classList.add('hidden');
@@ -119,7 +131,7 @@ class AppView {
         }
     }
 
-    // 📰 POSTS RENDER
+    //  POSTS RENDER
     displayPosts(posts, currentUserName) {
         if (!this.postsContainer) return;
 
@@ -181,7 +193,7 @@ class AppView {
         }).join('');
     }
 
-    // 👤 PROFILE
+    //  PROFILE
     displayUserProfile(user, count) {
         if (!this.profileName || !user) return;
 
@@ -192,7 +204,7 @@ class AppView {
         document.getElementById('profile-posts-count').textContent = count;
     }
 
-    // 📝 HIDE FORM
+    //  HIDE FORM
     hidePostForm() {
         const formContainer = document.getElementById('post-form-container');
         const titleInput = document.getElementById('post-title');

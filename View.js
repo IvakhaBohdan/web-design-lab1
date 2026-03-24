@@ -103,23 +103,14 @@ class AppView {
                 }
 
                 if (editPostBtn) {
-                    const newText = prompt('Новий текст поста:');
-                    if (newText) {
-                        handlers.editPost(Number(editPostBtn.dataset.id), newText);
-                    }
-                    return;
+                     handlers.startEditPost(Number(editPostBtn.dataset.id));
                 }
 
                 if (editCommentBtn) {
-                    const newText = prompt('Новий коментар:');
-                    if (newText) {
-                        handlers.editComment(
-                            Number(editCommentBtn.dataset.post),
-                            Number(editCommentBtn.dataset.index),
-                            newText
-                        );
-                    }
-                    return;
+                    handlers.startEditComment(
+                        Number(editCommentBtn.dataset.post),
+                        Number(editCommentBtn.dataset.index)
+                    );
                 }
             });
 

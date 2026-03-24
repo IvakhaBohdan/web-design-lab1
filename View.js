@@ -12,6 +12,7 @@ class AppView {
         this.closeModal = document.getElementById('close-modal');
     }
 
+    // Метод для форматування часу (години:хвилини)
     formatTime(timestamp) {
         if (!timestamp) return '';
         const date = new Date(timestamp);
@@ -22,6 +23,7 @@ class AppView {
         });
     }
 
+    // Метод для форматування дати
     formatDate(timestamp) {
         if (!timestamp) return '';
         const date = new Date(timestamp);
@@ -29,36 +31,35 @@ class AppView {
         return date.toLocaleDateString('uk-UA');
     }
 
-        renderIndex(user) {
-            const nav = document.getElementById('nav-auth');
-            const hero = document.getElementById('hero-action');
-        
-            if (!nav || !hero) return;
-        
-            if (user) {
-                nav.innerHTML = `<a href="#" id="logout-btn">Вихід</a>`;
-        
-                hero.innerHTML = `
-                    <a href="app.html"
-                       class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-full shadow-lg">
-                        Перейти до блогу
-                    </a>
-                `;
-            } else {
-                nav.innerHTML = `<a href="login.html">Вхід</a>`;
-        
-                hero.innerHTML = `
-                    <a href="register.html"
-                       class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-8 rounded-full shadow-lg">
-                        Приєднатися
-                    </a>
-                `;
-            }
-        }
-        
-
-
+    // Рендеринг контенту головної сторінки (index.html)
+    renderIndex(user) {
+        const nav = document.getElementById('nav-auth');
+        const hero = document.getElementById('hero-action');
     
+        if (!nav || !hero) return;
+    
+        if (user) {
+            nav.innerHTML = `<a href="#" id="logout-btn">Вихід</a>`;
+    
+            hero.innerHTML = `
+                <a href="app.html"
+                    class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-full shadow-lg">
+                    Перейти до блогу
+                </a>
+            `;
+        } else {
+            nav.innerHTML = `<a href="login.html">Вхід</a>`;
+    
+            hero.innerHTML = `
+                <a href="register.html"
+                    class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-8 rounded-full shadow-lg">
+                    Приєднатися
+                </a>
+            `;
+        }
+    }
+
+    // Прив'язка всіх обробників подій
     bindEvents(handlers) {
 
         if (this.loginForm) {
@@ -191,6 +192,7 @@ class AppView {
         }
     }
 
+    // Відображення списку всіх постів
     displayPosts(posts) {
         if (!this.postsContainer) return;
 
@@ -267,6 +269,7 @@ class AppView {
         }).join('');
     }
 
+    // Відображення даних профілю користувача та статистики
     displayUserProfile(user, stats) {
         if (!this.profileName || !user) return;
 
@@ -287,23 +290,25 @@ class AppView {
         }
     }
 
+    // Приховування форми створення нового поста
     hidePostForm() {
         document.getElementById('post-form-container')?.classList.add('hidden');
         document.getElementById('post-title').value = '';
         document.getElementById('post-body').value = '';
     }
 
+    // Перемикання видимості (показати/приховати) форми поста
     togglePostForm() {
         document.getElementById('post-form-container')?.classList.toggle('hidden');
     }
 
+    // Відображення системного повідомлення
     showAlert(message) {
         alert(message);
     }
 
+    // Відображення модального вікна введення (prompt)
     showPrompt(message, defaultValue = '') {
         return prompt(message, defaultValue);
     }
-
-    
 }

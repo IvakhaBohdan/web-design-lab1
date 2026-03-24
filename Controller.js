@@ -92,6 +92,20 @@ class AppController {
             // ЗМІНИТИ КОМЕНТАР
             editComment: (postId, index, text) => {
                 this.model.editComment(postId, index, text);
+            },
+
+            startEditPost: (id) => {
+                const newText = prompt('Новий текст поста:');
+                if (newText) {
+                    this.model.editPost(id, newText);
+                  }
+                },
+
+            startEditComment: (postId, index) => {
+                const newText = prompt('Новий коментар:');
+                if (newText) {
+                    this.model.editComment(postId, index, newText);
+                }
             }
      });
    

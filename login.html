@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Вхід - МійБлог</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 </head>
 <body class="bg-gray-100 min-h-screen flex flex-col">
     <nav class="bg-indigo-600 text-white p-4 shadow-md">
@@ -14,17 +15,67 @@
     </nav>
 
     <main class="flex-grow flex items-center justify-center p-4">
-        <form id="login-form" class="bg-white p-8 rounded-lg shadow-md w-full max-w-md space-y-4">
-            <h2 class="text-2xl font-bold text-center text-indigo-600">Вхід</h2>
-            <input type="email" id="email" placeholder="Email" required class="w-full p-2 border rounded">
-            <input type="password" id="password" placeholder="Пароль" required class="w-full p-2 border rounded">
-            <button type="submit" class="w-full bg-indigo-600 text-white py-2 rounded hover:bg-indigo-700 transition">Увійти</button>
-        </form>
+        <div id="login-app" class="w-full max-w-md">
+            <form @submit.prevent="handleLogin" class="bg-white p-8 rounded-lg shadow-md space-y-4">
+                <h2 class="text-2xl font-bold text-center text-indigo-600">Вхід</h2>
+                
+                <input type="email" 
+                       v-model="email" 
+                       placeholder="Email" 
+                       required 
+                       class="w-full p-2 border rounded focus:ring-2 focus:ring-indigo-400 outline-none">
+                
+                <input type="password" 
+                       v-model="password" 
+                       placeholder="Пароль" 
+                       required 
+                       class="w-full p-2 border rounded focus:ring-2 focus:ring-indigo-400 outline-none">
+                
+                <button type="submit" 
+                        class="w-full bg-indigo-600 text-white py-2 rounded hover:bg-indigo-700 transition">
+                    Увійти
+                </button>
+            </form>
+        </div>
     </main>
 
-    <script src="Model.js"></script>
-    <script src="View.js"></script>
-    <script src="Controller.js"></script>
-    <script src="main.js"></script>
+    <script>
+        const { createApp } = Vue;
+
+        createApp({
+            data() {
+                return {
+                    email: '',
+                    password: ''
+                }
+            },
+            methods: {
+                async handleLogin() {
+                    try {
+                        const response = await fetch('http://localhost:3000/api/login', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ 
+                                email: this.email, 
+                                password: this.password 
+                            })
+                        });
+
+                        if (response.ok) {
+                            const user = await response.json();
+                            localStorage.setItem('currentUser', JSON.stringify(user));
+                            window.location.href = 'app.html';
+                        } else {
+                            const errorData = await response.json();
+                            alert(errorData.error || 'Невірний логін або пароль');
+                        }
+                    } catch (error) {
+                        console.error('Error:', error);
+                        alert('Не вдалося з’єднатися з сервером. Перевір, чи запущено node server.js');
+                    }
+                }
+            }
+        }).mount('#login-app');
+    </script>
 </body>
 </html>

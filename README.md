@@ -37,4 +37,3 @@
 - `login.html` / `register.html` — форми автентифікації[cite: 1].
 - `style.css` — користувацькі стилі та конфігурація Tailwind[cite: 1].
 - `readme.md` — опис проєкту[cite: 1].
-```

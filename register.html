@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Реєстрація - МійБлог</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 </head>
 <body class="bg-gray-100 min-h-screen flex flex-col">
     <nav class="bg-indigo-600 text-white p-4 shadow-md">
@@ -14,25 +15,71 @@
     </nav>
 
     <main class="flex-grow flex items-center justify-center p-4">
-        <form id="register-form" class="bg-white p-8 rounded-lg shadow-md w-full max-w-md space-y-4">
-            <h2 class="text-2xl font-bold text-center text-indigo-600">Створити профіль</h2>
-            <input type="text" id="name" placeholder="Повне ім'я" required class="w-full p-2 border rounded">
-            <input type="email" id="email" placeholder="Email" required class="w-full p-2 border rounded">
-            <input type="password" id="password" placeholder="Пароль" required class="w-full p-2 border rounded">
-            <div class="flex space-x-2">
-                <select id="gender" class="w-1/2 p-2 border rounded">
-                    <option value="male">Чоловіча</option>
-                    <option value="female">Жіноча</option>
-                </select>
-                <input type="date" id="dob" required class="w-1/2 p-2 border rounded">
-            </div>
-            <button type="submit" class="w-full bg-indigo-600 text-white py-2 rounded hover:bg-indigo-700 transition">Зареєструватися</button>
-        </form>
+        <div id="register-app" class="w-full max-w-md">
+            <form @submit.prevent="handleRegister" class="bg-white p-8 rounded-lg shadow-md space-y-4">
+                <h2 class="text-2xl font-bold text-center text-indigo-600">Створити профіль</h2>
+                
+                <input type="text" v-model="name" placeholder="Повне ім'я" required class="w-full p-2 border rounded">
+                <input type="email" v-model="email" placeholder="Email" required class="w-full p-2 border rounded">
+                <input type="password" v-model="password" placeholder="Пароль" required class="w-full p-2 border rounded">
+                
+                <div class="flex space-x-2">
+                    <select v-model="gender" class="w-1/2 p-2 border rounded" required>
+                        <option value="" disabled>Стать</option>
+                        <option value="male">Чоловіча</option>
+                        <option value="female">Жіноча</option>
+                    </select>
+                    <input type="date" v-model="dob" required class="w-1/2 p-2 border rounded">
+                </div>
+                
+                <button type="submit" class="w-full bg-indigo-600 text-white py-2 rounded hover:bg-indigo-700 transition">
+                    Зареєструватися
+                </button>
+            </form>
+        </div>
     </main>
 
-    <script src="Model.js"></script>
-    <script src="View.js"></script>
-    <script src="Controller.js"></script>
-    <script src="main.js"></script>
+    <script>
+        const { createApp } = Vue;
+
+        createApp({
+            data() {
+                return {
+                    name: '',
+                    email: '',
+                    password: '',
+                    gender: '',
+                    dob: ''
+                }
+            },
+            methods: {
+                async handleRegister() {
+                    try {
+                        const response = await fetch('http://localhost:3000/api/register', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                name: this.name,
+                                email: this.email,
+                                password: this.password,
+                                gender: this.gender,
+                                dob: this.dob
+                            })
+                        });
+
+                        if (response.ok) {
+                            alert('Реєстрація успішна! Тепер увійдіть.');
+                            window.location.href = 'login.html';
+                        } else {
+                            const error = await response.json();
+                            alert(error.error || 'Помилка реєстрації');
+                        }
+                    } catch (e) {
+                        alert('Помилка сервера. Переконайся, що сервер запущено.');
+                    }
+                }
+            }
+        }).mount('#register-app');
+    </script>
 </body>
- </html>
+</html>

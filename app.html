@@ -3,75 +3,212 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Мій Блог - Нотатки про життя</title>
+    <title>Мій Блог - Головна</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <style>[v-cloak] { display: none; }</style>
 </head>
 <body class="flex flex-col min-h-screen bg-gray-100 font-sans text-gray-800">
-
-    <nav class="bg-indigo-600 text-white shadow-md">
-        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
-            <a href="index.html" class="text-xl font-bold tracking-wider">МійБлог</a>
-            <ul class="flex space-x-6">
-                <li><a href="index.html" class="hover:text-indigo-200 transition">Про додаток</a></li>
-                <li><a href="app.html" class="font-semibold border-b-2 border-white pb-1">Блог</a></li>
-                <li><a href="profile.html" class="hover:text-indigo-200 transition">Профіль</a></li>
-                <li><a href="#" id="logout-btn" class="hover:text-indigo-200 transition">Вихід</a></li>
-            </ul>
+<div id="app" v-cloak>
+    <!-- Навігація -->
+    <nav class="bg-indigo-600 text-white shadow-md p-4 mb-6">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="index.html" class="font-bold text-xl">МійБлог</a>
+            <div class="space-x-4">
+                <a href="app.html" class="underline">Блог</a>
+                <a href="profile.html" class="hover:text-indigo-200">Профіль</a>
+                <button @click="logout" class="hover:text-indigo-200">Вихід</button>
+            </div>
         </div>
     </nav>
 
-    <main class="container mx-auto px-4 py-8 flex-grow max-w-4xl">
-        
-        <div class="flex justify-between items-center mb-6">
-            <h1 class="text-3xl font-bold text-gray-900">Нотатки та пригоди</h1>
-            <button id="show-form-btn" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded shadow transition duration-200">
-                + Новий запис
-            </button>
+    <main class="container mx-auto px-4 max-w-3xl">
+        <button @click="showForm = !showForm" class="mb-6 bg-indigo-600 text-white px-6 py-2 rounded shadow hover:bg-indigo-700 transition">
+            {{ showForm ? 'Скасувати' : 'Написати новий допис' }}
+        </button>
+
+        <!-- Форма нового поста -->
+        <div v-if="showForm" class="bg-white p-6 rounded-lg shadow-md mb-6 border-l-4 border-indigo-500">
+            <input v-model="newPost.title" placeholder="Заголовок допису" class="w-full mb-3 p-2 border rounded outline-none focus:ring-2 focus:ring-indigo-300">
+            <textarea v-model="newPost.body" placeholder="Про що ви думаєте?" class="w-full mb-3 p-2 border rounded outline-none focus:ring-2 focus:ring-indigo-300" rows="4"></textarea>
+            <button @click="createPost" class="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700">Опублікувати</button>
         </div>
 
-        <div id="post-form-container" class="hidden bg-white p-6 rounded-lg shadow-sm mb-8 border border-gray-200 transition-all">
-            <h2 class="text-xl font-semibold mb-4 text-indigo-700">Про що ви думаєте сьогодні?</h2>
-            <form id="post-form">
-                <div class="mb-3">
-                    <input type="text" id="post-title" required 
-                           placeholder="Заголовок розповіді..." 
-                           class="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-indigo-500">
+        <!-- Стрічка дописів -->
+        <div class="space-y-8 pb-12">
+            <article v-for="post in posts" :key="post.id" class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+                <div class="flex justify-between items-start mb-2">
+                    <h2 class="text-2xl font-bold text-gray-900">{{ post.title }}</h2>
+                    <div v-if="post.authorEmail === user.email" class="flex space-x-3">
+                        <button @click="startEdit(post)" class="text-blue-500 hover:text-blue-700 text-sm">Редагувати</button>
+                        <button @click="deletePost(post.id)" class="text-red-500 hover:text-red-700 text-sm">Видалити</button>
+                    </div>
                 </div>
-                <div class="mb-3">
-                    <textarea id="post-body" rows="3" required 
-                              placeholder="Напишіть щось цікаве..." 
-                              class="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
+
+                <div class="text-xs text-gray-400 mb-4">
+                    Опубліковано: {{ formatDate(post.date) }}
+                    <span v-if="post.edited" class="ml-2 text-indigo-400 italic">(редаговано {{ formatDate(post.editDate) }})</span>
                 </div>
-                <div class="flex space-x-3">
-                    <button type="submit" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-6 rounded transition duration-200">
-                        Опублікувати
+                
+                <p class="text-gray-700 mb-6 whitespace-pre-line">{{ post.body }}</p>
+                
+                <div class="flex items-center text-sm text-gray-500 mb-6 border-b pb-4">
+                    <span class="font-semibold text-indigo-600">{{ post.authorName }}</span>
+                    <span class="mx-2">•</span>
+                    <button @click="toggleLike(post)" 
+                            :class="{'text-red-500 font-bold': post.likes.includes(user.email)}"
+                            class="flex items-center space-x-1 hover:scale-105 transition-transform outline-none">
+                        <span>❤️</span>
+                        <span>{{ post.likes.length }}</span>
                     </button>
-                    <button type="button" id="cancel-post-btn" class="text-gray-500 hover:text-gray-700 px-4 py-2">
-                        Скасувати
-                    </button>
                 </div>
-            </form>
-        </div>
 
-        <div id="posts-container" class="space-y-6">
-            <div class="text-center py-10">
-                <p class="text-gray-500">Завантаження дописів...</p>
-            </div>
+                <!-- Коментарі -->
+                <div class="bg-gray-50 rounded-lg p-4">
+                    <h3 class="text-xs font-bold uppercase text-gray-400 mb-4 tracking-widest">Коментарі</h3>
+                    
+                    <div v-for="comment in post.comments" :key="comment.id" class="mb-4 group border-b border-gray-100 last:border-0 pb-2">
+                        <div class="flex justify-between items-start">
+                            <div class="text-sm">
+                                <span class="font-bold text-gray-800">{{ comment.authorName }}</span>
+                                <span class="text-[10px] text-gray-400 ml-2">{{ formatDate(comment.date) }}</span>
+                                <span v-if="comment.edited" class="text-[10px] text-indigo-400 ml-1 italic">(ред.)</span>
+                                <p class="text-gray-600 mt-1">{{ comment.text }}</p>
+                            </div>
+                            <div v-if="comment.authorEmail === user.email" class="flex space-x-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                                <button @click="editComment(comment)" class="text-blue-400 hover:text-blue-600 text-xs">Редагувати</button>
+                                <button @click="deleteComment(comment.id)" class="text-red-400 hover:text-red-500 text-xs">Видалити</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex mt-4">
+                        <input v-model="commentTexts[post.id]" @keyup.enter="addComment(post.id)"
+                               placeholder="Напишіть відповідь..." class="flex-grow p-2 text-sm border rounded-l-md outline-none">
+                        <button @click="addComment(post.id)" class="bg-indigo-500 text-white px-4 rounded-r-md hover:bg-indigo-600">Відправити</button>
+                    </div>
+                </div>
+            </article>
         </div>
-
     </main>
+</div>
 
-    <footer class="bg-gray-800 text-gray-300 py-6 mt-auto">
-        <div class="container mx-auto px-4 text-center">
-            <p>&copy; 2026 Лабораторна робота №1.</p>
-        </div>
-    </footer>
-
-    <script src="Model.js"></script>
-    <script src="View.js"></script>
-    <script src="Controller.js"></script>
-    <script src="main.js"></script>
-
+<script>
+const { createApp } = Vue;
+createApp({
+    data() {
+        return {
+            user: JSON.parse(localStorage.getItem('currentUser')),
+            posts: [],
+            showForm: false,
+            newPost: { title: '', body: '' },
+            commentTexts: {}
+        }
+    },
+    mounted() {
+        if (!this.user) window.location.href = 'login.html';
+        this.fetchPosts();
+    },
+    methods: {
+        formatDate(timestamp) {
+            if (!timestamp) return '';
+            const date = new Date(timestamp);
+            return date.toLocaleString('uk-UA', {
+                day: '2-digit', month: '2-digit', year: 'numeric',
+                hour: '2-digit', minute: '2-digit'
+            });
+        },
+        async fetchPosts() {
+            const res = await fetch('http://localhost:3000/api/posts');
+            this.posts = await res.json();
+        },
+        async createPost() {
+            if (!this.newPost.title.trim() || !this.newPost.body.trim()) return;
+            await fetch('http://localhost:3000/api/posts', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ 
+                    ...this.newPost, 
+                    authorEmail: this.user.email, 
+                    authorName: this.user.name 
+                })
+            });
+            this.newPost = { title: '', body: '' };
+            this.showForm = false;
+            this.fetchPosts();
+        },
+        async toggleLike(post) {
+            await fetch('http://localhost:3000/api/like', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ postId: post.id, userEmail: this.user.email })
+            });
+            this.fetchPosts();
+        },
+        async deletePost(id) {
+            if (confirm('Видалити пост?')) {
+                await fetch(`http://localhost:3000/api/posts/${id}`, { method: 'DELETE' });
+                this.fetchPosts();
+            }
+        },
+        async startEdit(post) {
+            const newTitle = prompt("Заголовок:", post.title);
+            const newBody = prompt("Текст:", post.body);
+            if (newTitle !== null && newBody !== null) {
+                await fetch(`http://localhost:3000/api/posts/${post.id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        title: newTitle, 
+                        body: newBody,
+                        editDate: Date.now() 
+                    })
+                });
+                this.fetchPosts();
+            }
+        },
+        async addComment(postId) {
+            const text = this.commentTexts[postId];
+            if (!text || !text.trim()) return;
+            await fetch('http://localhost:3000/api/comments', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ 
+                    postId, 
+                    authorEmail: this.user.email, 
+                    authorName: this.user.name, 
+                    text: text 
+                })
+            });
+            this.commentTexts[postId] = '';
+            this.fetchPosts();
+        },
+        async editComment(comment) {
+            const newText = prompt("Редагувати:", comment.text);
+            if (newText !== null && newText.trim() !== "" && newText !== comment.text) {
+                await fetch(`http://localhost:3000/api/comments/${comment.id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        text: newText,
+                        editDate: Date.now() 
+                    })
+                });
+                this.fetchPosts();
+            }
+        },
+        async deleteComment(id) {
+            if (confirm('Видалити коментар?')) {
+                await fetch(`http://localhost:3000/api/comments/${id}`, { method: 'DELETE' });
+                this.fetchPosts();
+            }
+        },
+        logout() {
+            localStorage.removeItem('currentUser');
+            window.location.href = 'index.html';
+        }
+    }
+}).mount('#app');
+</script>
 </body>
 </html>

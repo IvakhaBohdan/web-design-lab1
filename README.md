@@ -20,7 +20,7 @@
 
 ## Посилання
 - **GitHub Pages (Frontend):** [https://ivakhabohdan.github.io/web-design-lab1/](https://ivakhabohdan.github.io/web-design-lab1/)
-- **URL на документ звіту:** [Google Drive Folder](https://drive.google.com/drive/folders/1Iy395ZgZAKappJe5Hfcwzf9OYo9nF-3f?hl=ru)
+- **URL на документ звіту:** [Google Drive Folder]([https://drive.google.com/drive/folders/1Iy395ZgZAKappJe5Hfcwzf9OYo9nF-3f?hl=ru](https://docs.google.com/document/d/1ih5i1cK6hftY1D_7Ti9ZnYtl0dgZ4Y_3-vGUa0uipOM/edit?usp=sharing))
 - **Telegram:** [@ivakha_b](https://t.me/bohdanivakha)
 
 ## Функціональні можливості
